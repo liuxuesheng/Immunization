@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -20,12 +21,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //set action bar to center
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.abs_layout);
 
         fragmentManager = getSupportFragmentManager();
 
         // Tab image view
         final TextView tabNews = (TextView) findViewById(R.id.main_news_iv);
-        final TextView tabChart = (TextView) findViewById(R.id.main_chart_iv);
+        final TextView tabRecords = (TextView) findViewById(R.id.main_records_iv);
         final TextView tabMap = (TextView) findViewById(R.id.main_map_iv);
         final TextView tabProfile = (TextView) findViewById(R.id.main_profile_iv);
 
@@ -44,14 +48,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tabChart.setOnClickListener(new View.OnClickListener() {
+        tabRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetLastEnabled(1);
-                tabChart.setTextColor(Color.WHITE);
+                tabRecords.setTextColor(Color.WHITE);
                 mPager.setCurrentItem(1);
                 lastEnabled = 1;
-                lastEnabledText = tabChart;
+                lastEnabledText = tabRecords;
             }
         });
 
@@ -99,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         resetLastEnabled(1);
-                        tabChart.setTextColor(Color.WHITE);
+                        tabRecords.setTextColor(Color.WHITE);
                         lastEnabled = 1;
-                        lastEnabledText = tabChart;
+                        lastEnabledText = tabRecords;
                         break;
                     case 2:
                         resetLastEnabled(2);

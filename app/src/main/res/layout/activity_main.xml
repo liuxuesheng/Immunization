@@ -6,6 +6,12 @@
     android:orientation="vertical"
     tools:context='com.wittarget.immunization.MainActivity'>
 
+    <com.wittarget.immunization.myViewPager
+        android:id="@+id/main_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +19,7 @@
         android:elevation="4dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingBottom="10dp">
+        android:padding="4dp">
 
         <LinearLayout
             android:id="@+id/main_news"
@@ -21,30 +27,44 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp">
 
+            <ImageView
+                android:id="@+id/goto_news_iv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home_black_24dp" />
             <TextView
                 android:id="@+id/main_news_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
                 android:text="News" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/main_chart"
+            android:id="@+id/main_records"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp">
 
+            <ImageView
+                android:id="@+id/goto_records_iv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_records_black_24dp" />
             <TextView
-                android:id="@+id/main_chart_iv"
+                android:id="@+id/main_records_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Immu Chart" />
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
+                android:text="Records" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,13 +73,19 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp">
+            <ImageView
+                android:id="@+id/goto_map_iv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_map_black_24dp" />
             <TextView
                 android:id="@+id/main_map_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
                 android:text="Map" />
         </LinearLayout>
 
@@ -69,21 +95,22 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp">
+            <ImageView
+                android:id="@+id/goto_profile_iv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_profile_black_24dp" />
             <TextView
                 android:id="@+id/main_profile_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
                 android:text="Profile" />
         </LinearLayout>
     </LinearLayout>
 
-    <com.wittarget.immunization.myViewPager
-        android:id="@+id/main_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1" />
 
 </LinearLayout>
