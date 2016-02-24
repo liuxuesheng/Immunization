@@ -32,8 +32,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" android:label="LoginActivity"/>
-        <activity android:name=".MapsActivity" android:label="MapsActivity"/>
-        <activity android:name=".RecordsActivity" android:label="RecordsActivity"/>
     </application>
 
 </manifest>

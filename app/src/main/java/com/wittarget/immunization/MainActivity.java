@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         this.lastTextView = textButton0;
 
         //Setup initial configuration
-        ll0.setBackground(new ColorDrawable(Color.rgb(30, 136, 229)));
         imageButton0.setImageResource(R.drawable.ic_home_white_24dp);
         textButton0.setTextColor(Color.WHITE);
         textButton1.setTextColor(Color.BLACK);
@@ -72,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 ResetLayout();
                 ResetLast(ll0, imageButton0, textButton0);
                 mPager.setCurrentItem(0);
-                ll0.setBackground(new ColorDrawable(Color.rgb(30, 136, 229)));
                 imageButton0.setImageResource(R.drawable.ic_home_white_24dp);
                 textButton0.setTextColor(Color.WHITE);
                 setPageIndex(0);
@@ -84,16 +82,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ResetLayout();
                 ResetLast(ll1, imageButton1, textButton1);
-                //mPager.setCurrentItem(1);
-                ll1.setBackground(new ColorDrawable(Color.rgb(30, 136, 229)));
+                mPager.setCurrentItem(1);
                 imageButton1.setImageResource(R.drawable.ic_records_white_24dp);
                 textButton1.setTextColor(Color.WHITE);
                 setPageIndex(1);
-
-                //create a map activity
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, RecordsActivity.class);
-                MainActivity.this.startActivity(intent);
             }
         });
 
@@ -102,16 +94,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ResetLayout();
                 ResetLast(ll2, imageButton2, textButton2);
-                //mPager.setCurrentItem(2);
-                ll2.setBackground(new ColorDrawable(Color.rgb(30, 136, 229)));
+                mPager.setCurrentItem(2);
                 imageButton2.setImageResource(R.drawable.ic_map_white_24dp);
                 textButton2.setTextColor(Color.WHITE);
                 setPageIndex(2);
-
-                //create a map activity
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, MapsActivity.class);
-                MainActivity.this.startActivity(intent);
             }
         });
 
@@ -120,8 +106,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ResetLayout();
                 ResetLast(ll3, imageButton3, textButton3);
-                //mPager.setCurrentItem(3);
-                ll3.setBackground(new ColorDrawable(Color.rgb(30, 136, 229)));
+                mPager.setCurrentItem(3);
                 imageButton3.setImageResource(R.drawable.ic_profile_white_24dp);
                 textButton3.setTextColor(Color.WHITE);
                 setPageIndex(3);
@@ -180,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
                 if (position != getPageIndex()) {
                     ResetLayout();
                     ResetLast(myll, myImageButton, myTextButton);
-                    myll.setBackground(new ColorDrawable(Color.rgb(30, 136, 229)));
                     myImageButton.setImageResource(R.drawable.ic_home_white_24dp);
                     myTextButton.setTextColor(Color.WHITE);
                     setPageIndex(position);
@@ -194,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ResetLayout() {
-        this.lastLayout.setBackground(new ColorDrawable(Color.rgb(238, 238, 238)));
         String lastString = this.lastTextView.getText().toString();
         if (lastString.equals("News"))
             this.lastImageView.setImageResource(R.drawable.ic_home_black_24dp);
