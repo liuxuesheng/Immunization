@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.wittarget.immunization.mainPageFragments.immuchartFragment;
+import com.wittarget.immunization.mainPageFragments.RecordsFragment;
 import com.wittarget.immunization.mainPageFragments.mapFragment;
 import com.wittarget.immunization.mainPageFragments.newsFragment;
 import com.wittarget.immunization.mainPageFragments.profileFragment;
@@ -25,13 +25,13 @@ public class myAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return newsFragment.newInstance("");
+                return newsFragment.newInstance("News");
             case 1:
-                return immuchartFragment.newInstance("");
+                return RecordsFragment.newInstance("Records");
             case 2:
-                return mapFragment.newInstance("");
+                return mapFragment.newInstance("Map");
             case 3:
-                return profileFragment.newInstance("");
+                return profileFragment.newInstance("Profile");
             default:
                 return null;
         }
