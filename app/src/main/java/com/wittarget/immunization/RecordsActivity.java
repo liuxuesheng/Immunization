@@ -1,0 +1,128 @@
+package com.wittarget.immunization;
+
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class RecordsActivity extends AppCompatActivity {
+    //分别定义通讯录中的用户名、电话、地区等信息
+    private String[] info_titles={"DTap-IPV-Hib","Pneu-C-13","Rota","MMR"};
+    private String[] info_details={"recommended for children under 5 years old","recommended for children under 3 years old","recommended for children under 2 years old","recommended for children under 1 years old"};
+    //定义一个ArrayList数组，每一条数据对应通讯录中的一个联系人信息
+    private ArrayList<Map<String,Object>> mInfos= new ArrayList <Map <String,Object> > ();
+    //定义一个ListView
+    private ListView mListView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        //new一个ListView
+        mListView = new ListView(this);
+        //添加联系人信息
+        for(int i=0;i <info_titles.length;i++){
+            Map <String,Object>  item = new HashMap<String,Object>();
+            item.put("img", R.drawable.ic_home_black_24dp);
+            item.put("title", info_titles[i]);
+            item.put("detail", info_details[i]);
+            mInfos.add(item);
+        }
+        MyAdapter adapter = new MyAdapter(this, mInfos);
+        mListView.setAdapter(adapter);
+        setContentView(mListView);
+    }
+    private class MyAdapter extends BaseAdapter {
+        private Context context;
+        private List<Map <String, Object> > listItems;
+        private LayoutInflater listContainer;
+        private boolean[] hasChecked;
+        public final class ListItemView{
+            public ImageView img;
+            public TextView name;
+            public TextView phone;
+            public TextView region;
+            public CheckBox check;
+        }
+        public MyAdapter(Context context, List <Map <String, Object> >  listItems) {
+            this.context = context;
+            listContainer = LayoutInflater.from(context);
+            this.listItems = listItems;
+            hasChecked = new boolean[getCount()];
+        }
+        public int getCount() {
+            return listItems.size();
+        }
+        public Object getItem(int position) {
+            return null;
+        }
+        public long getItemId(int position) {
+            return 0;
+        }
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final int selectID = position;
+            ListItemView  listItemView = null;
+            if (convertView == null) {
+                listItemView = new ListItemView();
+                //获取list_item布局文件的视图
+                convertView = listContainer.inflate(R.layout.layout_records_item, null);
+                //获取控件对象
+                listItemView.img = (ImageView)convertView.findViewById(R.id.info_img);
+                listItemView.name = (TextView)convertView.findViewById(R.id.info_title);
+                listItemView.region = (TextView)convertView.findViewById(R.id.info_details);
+                listItemView.check = (CheckBox)convertView.findViewById(R.id.checkBox);
+                //设置控件集到convertView
+                convertView.setTag(listItemView);
+                //设置联系人信息
+                listItemView.img.setBackgroundResource((Integer) listItems.get(
+                        position).get("img"));
+                listItemView.name.setText((String) listItems.get(
+                        position).get("title"));
+                listItemView.region.setText((String) listItems.get(
+                        position).get("detail"));
+
+                listItemView.check
+                        .setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+                            public void onCheckedChanged(CompoundButton buttonView,
+                                                         boolean isChecked) {
+                                checkedChange(selectID);
+                            }
+                        });
+            }else {
+                listItemView = (ListItemView)convertView.getTag();
+            }
+            return convertView;
+        }
+
+        private void checkedChange(int checkedID) {
+            hasChecked[checkedID] = !hasChecked(checkedID);
+        }
+
+        public boolean hasChecked(int checkedID) {
+            return hasChecked[checkedID];
+        }
+
+        private void showDetailInfo(int clickID) {
+            new AlertDialog.Builder(context)
+                    .setIcon(Integer.parseInt(listItems.get(clickID).get("img").toString()))
+                    .setTitle(listItems.get(clickID).get("name")+"详细信息")
+                    .setMessage("电话:"+listItems.get(clickID).get("phone").toString()+" 地区："+listItems.get(clickID).get("region").toString())
+                    .setPositiveButton("确定", null)
+                    .show();
+        }
+    }
+}
