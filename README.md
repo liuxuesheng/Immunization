@@ -26,8 +26,8 @@ Map services:Using google map services to help users find hospital or clinic eas
 User profile:management user infos, reminder infos, and babies infos.
 
 ##libs and dependencies
-'com.android.support:design:23.1.1'
-'com.google.android.gms:play-services:8.4.0'
+`com.android.support:design:23.1.1`.
+`com.google.android.gms:play-services:8.4.0`
 
 ## Versioning
 Version:1.0
