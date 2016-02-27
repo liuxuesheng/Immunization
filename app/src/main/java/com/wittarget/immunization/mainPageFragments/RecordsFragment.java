@@ -60,4 +60,5 @@ public class RecordsFragment extends Fragment {
         super.onAttach(context);
         this.activity = (Activity) context;
     }
+
 }

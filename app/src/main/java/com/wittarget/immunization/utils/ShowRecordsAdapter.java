@@ -1,6 +1,7 @@
 package com.wittarget.immunization.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.wittarget.immunization.LoginActivity;
+import com.wittarget.immunization.MainActivity;
 import com.wittarget.immunization.R;
 
 import java.util.List;
@@ -65,7 +68,10 @@ public class ShowRecordsAdapter extends BaseAdapter {
 
             listItemView.records_name.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    showDetailInfo(selectID);
+                    //showDetailInfo(selectID);
+//                    Intent intent = new Intent();
+//                    intent.setClass(context, LoginActivity.class);
+//                    context.startActivity(intent);
                 }
             });
 
