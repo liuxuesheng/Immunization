@@ -1,8 +1,6 @@
 package com.wittarget.immunization;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -110,11 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 imageButton3.setImageResource(R.drawable.ic_profile_white_24dp);
                 textButton3.setTextColor(Color.WHITE);
                 setPageIndex(3);
-
-                //create a login activity
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, LoginActivity.class);
-                MainActivity.this.startActivity(intent);
             }
         });
 
