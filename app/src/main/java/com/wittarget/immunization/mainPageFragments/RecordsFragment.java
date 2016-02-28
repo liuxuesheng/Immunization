@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.wittarget.immunization.R;
-import com.wittarget.immunization.utils.ShowRecordsAdapter;
+import com.wittarget.immunization.records.ShowRecordsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RecordsFragment extends Fragment {
+public class recordsFragment extends Fragment {
     //create 2 string array to store records_name and record_detail
     private String[] records_names = {"DTap-IPV-Hib", "Pneu-C-13", "Rota", "MMR"};
     private String[] records_details = {"recommended for children under 5 years old", "recommended for children under 3 years old", "recommended for children under 2 years old", "recommended for children under 1 years old"};
@@ -25,11 +25,11 @@ public class RecordsFragment extends Fragment {
 
     //define records info
     private Activity activity = null;
-    private String TAG = RecordsFragment.class.getName();
+    private String TAG = recordsFragment.class.getName();
     private ListView mListView;
 
-    public static RecordsFragment newInstance(String text) {
-        RecordsFragment f = new RecordsFragment();
+    public static recordsFragment newInstance(String text) {
+        recordsFragment f = new recordsFragment();
         Bundle b = new Bundle();
         b.putString("msg", text);
         f.setArguments(b);

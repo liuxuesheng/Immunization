@@ -6,12 +6,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static int screenWidth = 0;
+    private static int newsImageWidth = 0;
+    private static int newsImageHeight = 0;
+    private static int testImageWidth = 0;
+    private static int testImageHeight = 0;
 
     private FragmentManager fragmentManager;
     private myAdapter mAdapter;
@@ -23,10 +30,42 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout lastLayout = null;
     private int pageIndex = 0;
 
+    public static int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public static int getNewsImageWidth() {
+        return newsImageWidth;
+    }
+
+    public static int getNewsImageHeight() {
+        return newsImageHeight;
+    }
+
+    public static int getTestImageWidth() {
+        return testImageWidth;
+    }
+
+    public static int getTestImageHeight() {
+        return testImageHeight;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Get metrics
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        screenWidth = displayMetrics.widthPixels;
+
+        newsImageWidth = getScreenWidth()*7 / 24;
+        newsImageHeight = (int) (getNewsImageWidth() * 0.618);
+
+        testImageWidth = getScreenWidth() / 2;
+        testImageHeight = (int) (getTestImageWidth() * 0.618);
+
         //set action bar to center
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.layout_actionbar);

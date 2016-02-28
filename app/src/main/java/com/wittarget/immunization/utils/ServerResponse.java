@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ServerResponse  extends AsyncTask<String, Object, Object> {
+public class ServerResponse extends AsyncTask<String, Object, Object> {
     public String DEBUGSTRING = "app_debug";
     private AsyncResponse delegate = null;
     private String out = "";
@@ -34,15 +34,19 @@ public class ServerResponse  extends AsyncTask<String, Object, Object> {
 
     @Override
     protected String doInBackground(String... urls) {
+        /*StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);*/
+
         URL url;
         HttpURLConnection urlConnection = null;
         try {
-            url = new URL(config.SERVERADDRESS + urls[0].replaceAll(" ", "%20"));
+            url = new URL(urls[0]);
             urlConnection = (HttpURLConnection) url.openConnection();
-
+            urlConnection.setConnectTimeout(2000);
             InputStream in = urlConnection.getInputStream();
             out = readStream(in);
-            Log.d(DEBUGSTRING, " " + (String) out);
+            Log.d(DEBUGSTRING, " " + out);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

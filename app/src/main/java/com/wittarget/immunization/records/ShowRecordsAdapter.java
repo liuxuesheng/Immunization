@@ -1,4 +1,4 @@
-package com.wittarget.immunization.utils;
+package com.wittarget.immunization.records;
 
 import android.content.Context;
 import android.content.Intent;

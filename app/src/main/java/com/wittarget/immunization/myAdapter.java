@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.wittarget.immunization.mainPageFragments.RecordsFragment;
+import com.wittarget.immunization.mainPageFragments.recordsFragment;
 import com.wittarget.immunization.mainPageFragments.mapFragment;
 import com.wittarget.immunization.mainPageFragments.newsFragment;
 import com.wittarget.immunization.mainPageFragments.profileFragment;
@@ -27,7 +27,7 @@ public class myAdapter extends FragmentPagerAdapter {
             case 0:
                 return newsFragment.newInstance("News");
             case 1:
-                return RecordsFragment.newInstance("Records");
+                return recordsFragment.newInstance("Records");
             case 2:
                 return mapFragment.newInstance("Map");
             case 3:
