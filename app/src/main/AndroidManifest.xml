@@ -46,6 +46,7 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".mainPageFragments.NewsDisplayActivity"></activity>
     </application>
 
 </manifest>

@@ -13,6 +13,12 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static int screenWidth = 0;
+    private static int newsImageWidth = 0;
+    private static int newsImageHeight = 0;
+    private static int testImageWidth = 0;
+    private static int testImageHeight = 0;
+
     private FragmentManager fragmentManager;
     private myAdapter mAdapter;
     private myViewPager mPager;
@@ -22,6 +28,26 @@ public class MainActivity extends AppCompatActivity {
     private ImageView lastImageView = null;
     private LinearLayout lastLayout = null;
     private int pageIndex = 0;
+
+    public static int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public static int getNewsImageWidth() {
+        return newsImageWidth;
+    }
+
+    public static int getNewsImageHeight() {
+        return newsImageHeight;
+    }
+
+    public static int getTestImageWidth() {
+        return testImageWidth;
+    }
+
+    public static int getTestImageHeight() {
+        return testImageHeight;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
