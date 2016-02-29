@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("验证中...");
+        progressDialog.setMessage("Waiting...");
         progressDialog.show();
 
         String email = usernameText.getText().toString();
@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity implements
         String password = passwordText.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            usernameText.setError("请输入有效的邮箱地址");
+            usernameText.setError("Please input valid email address!");
             valid = false;
         } else {
             usernameText.setError(null);
