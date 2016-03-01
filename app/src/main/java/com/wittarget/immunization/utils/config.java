@@ -1,11 +1,11 @@
 package com.wittarget.immunization.utils;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class config {
-    public final static String SERVERADDRESS = "http://192.168.0.18/Immunizationserver";
-
+    //public final static String SERVERADDRESS = "http://192.168.0.18/Immunizationserver";
+    //public final static String SERVERADDRESS = "http://10.100.24.223/immunizationserver";
+    public final static String SERVERADDRESS = "http://192.168.250.10/immunizationserver";
     public static boolean getAuth(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("immunization", Context.MODE_PRIVATE);
         return prefs.getBoolean("immunization.auth", false);

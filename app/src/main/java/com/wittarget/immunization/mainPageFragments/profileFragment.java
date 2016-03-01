@@ -23,5 +23,4 @@ public class profileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         return v;
     }
-
 }
