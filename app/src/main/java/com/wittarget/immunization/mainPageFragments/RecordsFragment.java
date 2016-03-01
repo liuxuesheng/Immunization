@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class recordsFragment extends Fragment implements AsyncResponse {
     Activity activity;
     JSONArray arr = null;
-    //ImageView iv = null;
+    ImageView iv = null;
     private LinearLayout records_container = null;
     //private ViewPager recordsPager = null;
 
@@ -70,6 +70,7 @@ public class recordsFragment extends Fragment implements AsyncResponse {
             for (int i = 0; i < arr.length(); i++) {
                 String imageSrc = null;
                 TextView tv = null;
+                TextView tv2 = null;
                 boolean flag = false;
                 TextView sectionTextView = null;
                 String item_section = null;
@@ -80,22 +81,22 @@ public class recordsFragment extends Fragment implements AsyncResponse {
                     ex.printStackTrace();
                 }
 
-                try {
-                    String sectionName = item.getString("section");
-                    sectionTextView = new TextView(activity);
-                    sectionTextView.setText(sectionName);
-                    sectionTextView.setTextSize(21);
-                    sectionTextView.setTextColor(Color.rgb(30, 136, 229));
-                    sectionTextView.setPadding(20, 30, 0, 50);
-                    sectionTextView.setCompoundDrawablesWithIntrinsicBounds(PaintService.paintTextIconDrawable(activity, null, 19, 16, new ShapeDrawable(new RectShape()), Color.rgb(30, 136, 229)), null, null, null);
-                    sectionTextView.setCompoundDrawablePadding(16);
-
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                    sectionTextView.setLayoutParams(params);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+//                try {
+//                    String sectionName = item.getString("section");
+//                    sectionTextView = new TextView(activity);
+//                    sectionTextView.setText(sectionName);
+//                    sectionTextView.setTextSize(21);
+//                    sectionTextView.setTextColor(Color.rgb(30, 136, 229));
+//                    sectionTextView.setPadding(20, 30, 0, 50);
+//                    sectionTextView.setCompoundDrawablesWithIntrinsicBounds(PaintService.paintTextIconDrawable(activity, null, 19, 16, new ShapeDrawable(new RectShape()), Color.rgb(30, 136, 229)), null, null, null);
+//                    sectionTextView.setCompoundDrawablePadding(16);
+//
+//                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//                    sectionTextView.setLayoutParams(params);
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
 
                 if (sectionTextView != null) {
                     addDivider(records_container, Color.rgb(30, 136, 229), 6);
@@ -111,22 +112,76 @@ public class recordsFragment extends Fragment implements AsyncResponse {
                 }
 
                 try {
+                    //imageSrc = item.getString("news_imageURL");
+                    iv = new ImageView(activity);
+                    iv.setImageResource(R.drawable.ic_records_black_24dp);
+                   // LoadImageFromURL loadImage = new LoadImageFromURL();
+                   // loadImage.execute(config.SERVERADDRESS+"/news/" + imageSrc, iv, true, MainActivity.getNewsImageWidth(), MainActivity.getNewsImageHeight());
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MainActivity.getNewsImageWidth(), MainActivity.getNewsImageHeight());
+                    layoutParams.setMargins(30, 3, 30, 3);
+                    iv.setLayoutParams(layoutParams);
+
                     currentId = item.getString("id");
                     final String newsId = currentId;
+                    final String current_item_section = item_section;
+                    iv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent myIntent = null;
+                            myIntent = new Intent(activity, NewsDisplayActivity.class);
+                            myIntent.putExtra("record", newsId);
+                            myIntent.putExtra("section", current_item_section);
+                            activity.startActivity(myIntent);
+                        }
+                    });
+
+                } catch (Exception ex) {
+                    flag = true;
+                    ex.printStackTrace();
+                }
+
+                try {
+                    currentId = item.getString("id");
+                    final String recordsId = currentId;
                     final String current_item_section = item_section;
 
                     tv = new TextView(activity);
                     tv.setText(item.getString("immu_name"));
                     tv.setBackgroundColor(Color.WHITE);
                     tv.setPadding(30, 10, 30, 10);
-                    tv.setTextSize(17);
+                    tv.setTextSize(24);
                     tv.setBackgroundColor(Color.TRANSPARENT);
                     tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent myIntent = null;
                             myIntent = new Intent(activity, NewsDisplayActivity.class);
-                            myIntent.putExtra("record", newsId);
+                            myIntent.putExtra("record", recordsId);
+                            myIntent.putExtra("section", current_item_section);
+                            activity.startActivity(myIntent);
+                        }
+                    });
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    currentId = item.getString("id");
+                    final String recordsId = currentId;
+                    final String current_item_section = item_section;
+
+                    tv2 = new TextView(activity);
+                    tv2.setText(item.getString("immu_subtitle"));
+                    tv2.setBackgroundColor(Color.WHITE);
+                    tv2.setPadding(30, 10, 30, 10);
+                    tv2.setTextSize(20);
+                    tv2.setBackgroundColor(Color.TRANSPARENT);
+                    tv2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent myIntent = null;
+                            myIntent = new Intent(activity, NewsDisplayActivity.class);
+                            myIntent.putExtra("record", recordsId);
                             myIntent.putExtra("section", current_item_section);
                             activity.startActivity(myIntent);
                         }
@@ -139,12 +194,16 @@ public class recordsFragment extends Fragment implements AsyncResponse {
                 if (flag == true) {
                     records_container.addView(tv);
                 } else {
+                    LinearLayout ll0 = new LinearLayout(activity);
+                    ll0.setOrientation(LinearLayout.HORIZONTAL);
+                    ll0.addView(iv);
                     LinearLayout ll = new LinearLayout(activity);
-                    ll.setOrientation(LinearLayout.HORIZONTAL);
-
+                    ll.setOrientation(LinearLayout.VERTICAL);
                     //ll.addView(iv);
                     ll.addView(tv);
-                    records_container.addView(ll);
+                    ll.addView(tv2);
+                    ll0.addView(ll);
+                    records_container.addView(ll0);
                     System.out.println("HHHHHHHHHHHHHHH");
 
                 }
