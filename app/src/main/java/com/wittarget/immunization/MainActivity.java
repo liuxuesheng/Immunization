@@ -1,5 +1,6 @@
 package com.wittarget.immunization;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.wittarget.immunization.utils.config;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenWidth = displayMetrics.widthPixels;
 
-        newsImageWidth = getScreenWidth()*7 / 24;
+        newsImageWidth = getScreenWidth() * 7 / 24;
         newsImageHeight = (int) (getNewsImageWidth() * 0.618);
 
         testImageWidth = getScreenWidth() / 2;
@@ -234,5 +237,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setPageIndex(int index) {
         this.pageIndex = index;
+    }
+
+    public void logout(View v) {
+        config.setAuth(this, false);
+        config.setToken(this, "");
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
