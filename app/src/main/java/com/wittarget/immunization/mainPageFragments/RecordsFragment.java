@@ -12,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,9 +21,8 @@ import android.widget.TextView;
 import com.wittarget.immunization.MainActivity;
 import com.wittarget.immunization.R;
 import com.wittarget.immunization.news.NewsDisplayActivity;
+import com.wittarget.immunization.records.RecordsDisplayActivity;
 import com.wittarget.immunization.utils.AsyncResponse;
-import com.wittarget.immunization.utils.LoadImageFromURL;
-import com.wittarget.immunization.utils.PaintService;
 import com.wittarget.immunization.utils.ServerResponse;
 import com.wittarget.immunization.utils.config;
 
@@ -29,14 +30,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 
 public class recordsFragment extends Fragment implements AsyncResponse {
     Activity activity;
     JSONArray arr = null;
-    ImageView iv = null;
     private LinearLayout records_container = null;
-    //private ViewPager recordsPager = null;
+
 
     public static recordsFragment newInstance(String text) {
         recordsFragment f = new recordsFragment();
@@ -62,41 +61,23 @@ public class recordsFragment extends Fragment implements AsyncResponse {
         try {
             //news list
             arr = new JSONArray((String)out);
-
-            ArrayList<String> ids = new ArrayList<String>();
             JSONObject item = null;
             String currentId = null;
 
             for (int i = 0; i < arr.length(); i++) {
-                String imageSrc = null;
-                TextView tv = null;
-                TextView tv2 = null;
+                TextView title_textview = null;
+                TextView subtitle_textview = null;
+                CheckBox checkbox = null;
                 boolean flag = false;
                 TextView sectionTextView = null;
                 String item_section = null;
+                final boolean[] hasChecked = new boolean[arr.length()];
 
                 try {
                     item = arr.getJSONObject(i);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-
-//                try {
-//                    String sectionName = item.getString("section");
-//                    sectionTextView = new TextView(activity);
-//                    sectionTextView.setText(sectionName);
-//                    sectionTextView.setTextSize(21);
-//                    sectionTextView.setTextColor(Color.rgb(30, 136, 229));
-//                    sectionTextView.setPadding(20, 30, 0, 50);
-//                    sectionTextView.setCompoundDrawablesWithIntrinsicBounds(PaintService.paintTextIconDrawable(activity, null, 19, 16, new ShapeDrawable(new RectShape()), Color.rgb(30, 136, 229)), null, null, null);
-//                    sectionTextView.setCompoundDrawablePadding(16);
-//
-//                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//                    sectionTextView.setLayoutParams(params);
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//                }
 
                 if (sectionTextView != null) {
                     addDivider(records_container, Color.rgb(30, 136, 229), 6);
@@ -107,55 +88,28 @@ public class recordsFragment extends Fragment implements AsyncResponse {
 
                 try {
                     item_section = item.getString("item_section");
+                    System.out.println("Myitem_section"+item_section);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
-                try {
-                    //imageSrc = item.getString("news_imageURL");
-                    iv = new ImageView(activity);
-                    iv.setImageResource(R.drawable.ic_records_black_24dp);
-                   // LoadImageFromURL loadImage = new LoadImageFromURL();
-                   // loadImage.execute(config.SERVERADDRESS+"/news/" + imageSrc, iv, true, MainActivity.getNewsImageWidth(), MainActivity.getNewsImageHeight());
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MainActivity.getNewsImageWidth(), MainActivity.getNewsImageHeight());
-                    layoutParams.setMargins(30, 3, 30, 3);
-                    iv.setLayoutParams(layoutParams);
-
-                    currentId = item.getString("id");
-                    final String newsId = currentId;
-                    final String current_item_section = item_section;
-                    iv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent myIntent = null;
-                            myIntent = new Intent(activity, NewsDisplayActivity.class);
-                            myIntent.putExtra("record", newsId);
-                            myIntent.putExtra("section", current_item_section);
-                            activity.startActivity(myIntent);
-                        }
-                    });
-
-                } catch (Exception ex) {
-                    flag = true;
-                    ex.printStackTrace();
-                }
-
+                //crete records name view
                 try {
                     currentId = item.getString("id");
                     final String recordsId = currentId;
                     final String current_item_section = item_section;
 
-                    tv = new TextView(activity);
-                    tv.setText(item.getString("immu_name"));
-                    tv.setBackgroundColor(Color.WHITE);
-                    tv.setPadding(30, 10, 30, 10);
-                    tv.setTextSize(24);
-                    tv.setBackgroundColor(Color.TRANSPARENT);
-                    tv.setOnClickListener(new View.OnClickListener() {
+                    title_textview = new TextView(activity);
+                    title_textview.setText(item.getString("immu_name"));
+                    title_textview.setBackgroundColor(Color.WHITE);
+                    title_textview.setPadding(20, 10, 30, 10);
+                    title_textview.setTextSize(18);
+                    title_textview.setBackgroundColor(Color.TRANSPARENT);
+                    title_textview.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent myIntent = null;
-                            myIntent = new Intent(activity, NewsDisplayActivity.class);
+                            myIntent = new Intent(activity, RecordsDisplayActivity.class);
                             myIntent.putExtra("record", recordsId);
                             myIntent.putExtra("section", current_item_section);
                             activity.startActivity(myIntent);
@@ -165,22 +119,24 @@ public class recordsFragment extends Fragment implements AsyncResponse {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+
+                //crete records subtitle view
                 try {
                     currentId = item.getString("id");
                     final String recordsId = currentId;
                     final String current_item_section = item_section;
 
-                    tv2 = new TextView(activity);
-                    tv2.setText(item.getString("immu_subtitle"));
-                    tv2.setBackgroundColor(Color.WHITE);
-                    tv2.setPadding(30, 10, 30, 10);
-                    tv2.setTextSize(20);
-                    tv2.setBackgroundColor(Color.TRANSPARENT);
-                    tv2.setOnClickListener(new View.OnClickListener() {
+                    subtitle_textview = new TextView(activity);
+                    subtitle_textview.setText(item.getString("immu_subtitle"));
+                    subtitle_textview.setBackgroundColor(Color.WHITE);
+                    subtitle_textview.setPadding(20, 10, 30, 10);
+                    subtitle_textview.setTextSize(14);
+                    subtitle_textview.setBackgroundColor(Color.TRANSPARENT);
+                    subtitle_textview.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent myIntent = null;
-                            myIntent = new Intent(activity, NewsDisplayActivity.class);
+                            myIntent = new Intent(activity, RecordsDisplayActivity.class);
                             myIntent.putExtra("record", recordsId);
                             myIntent.putExtra("section", current_item_section);
                             activity.startActivity(myIntent);
@@ -190,20 +146,42 @@ public class recordsFragment extends Fragment implements AsyncResponse {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+
+                //crete check box view
+                try {
+                    currentId = item.getString("id");
+                    final String recordsId = currentId;
+                    final String current_item_section = item_section;
+                    final int checkboxID = Integer.parseInt(recordsId);
+
+                    checkbox = new CheckBox(activity);
+                    checkbox.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+                        public void onCheckedChanged(CompoundButton buttonView,
+                                                     boolean isChecked) {
+                            hasChecked[checkboxID] = !hasChecked[checkboxID];
+                            System.out.println("lllllllllllllllllll"+hasChecked[Integer.parseInt(recordsId)]);
+                        }
+                    });
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
 
                 if (flag == true) {
-                    records_container.addView(tv);
+                    records_container.addView(title_textview);
                 } else {
-                    LinearLayout ll0 = new LinearLayout(activity);
-                    ll0.setOrientation(LinearLayout.HORIZONTAL);
-                    ll0.addView(iv);
-                    LinearLayout ll = new LinearLayout(activity);
-                    ll.setOrientation(LinearLayout.VERTICAL);
-                    //ll.addView(iv);
-                    ll.addView(tv);
-                    ll.addView(tv2);
-                    ll0.addView(ll);
-                    records_container.addView(ll0);
+                    LinearLayout linearLayoutH = new LinearLayout(activity);
+                    linearLayoutH.setOrientation(LinearLayout.HORIZONTAL);
+                    //linearLayoutH.addView(imageView);
+                    LinearLayout linearLayoutV = new LinearLayout(activity);
+                    linearLayoutV.setOrientation(LinearLayout.VERTICAL);
+                    linearLayoutV.addView(title_textview);
+                    linearLayoutV.addView(subtitle_textview);
+                    linearLayoutH.addView(checkbox);
+                    linearLayoutH.addView(linearLayoutV);
+
+                    records_container.addView(linearLayoutH);
                     System.out.println("HHHHHHHHHHHHHHH");
 
                 }
