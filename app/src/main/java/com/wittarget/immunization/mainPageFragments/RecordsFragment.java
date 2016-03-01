@@ -4,23 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.wittarget.immunization.MainActivity;
 import com.wittarget.immunization.R;
-import com.wittarget.immunization.news.NewsDisplayActivity;
 import com.wittarget.immunization.records.RecordsDisplayActivity;
 import com.wittarget.immunization.utils.AsyncResponse;
 import com.wittarget.immunization.utils.ServerResponse;
@@ -35,7 +29,6 @@ public class recordsFragment extends Fragment implements AsyncResponse {
     Activity activity;
     JSONArray arr = null;
     private LinearLayout records_container = null;
-
 
     public static recordsFragment newInstance(String text) {
         recordsFragment f = new recordsFragment();
@@ -60,7 +53,7 @@ public class recordsFragment extends Fragment implements AsyncResponse {
     public void onTaskComplete(Object out) {
         try {
             //news list
-            arr = new JSONArray((String)out);
+            arr = new JSONArray((String) out);
             JSONObject item = null;
             String currentId = null;
 
@@ -88,7 +81,7 @@ public class recordsFragment extends Fragment implements AsyncResponse {
 
                 try {
                     item_section = item.getString("item_section");
-                    System.out.println("Myitem_section"+item_section);
+                    System.out.println("Myitem_section" + item_section);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -159,7 +152,7 @@ public class recordsFragment extends Fragment implements AsyncResponse {
                         public void onCheckedChanged(CompoundButton buttonView,
                                                      boolean isChecked) {
                             hasChecked[checkboxID] = !hasChecked[checkboxID];
-                            System.out.println("lllllllllllllllllll"+hasChecked[Integer.parseInt(recordsId)]);
+                            System.out.println("lllllllllllllllllll" + hasChecked[Integer.parseInt(recordsId)]);
                         }
                     });
 
@@ -197,16 +190,19 @@ public class recordsFragment extends Fragment implements AsyncResponse {
     public void onTaskStart() {
 
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.activity = (Activity) context;
     }
+
     private void addDivider(LinearLayout ll, int color, int height) {
         try {
             View divider = new View(activity);
