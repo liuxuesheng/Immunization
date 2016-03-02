@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.wittarget.immunization.utils.AsyncResponse;
 import com.wittarget.immunization.utils.ServerResponse;
+import com.wittarget.immunization.utils.config;
 
 import org.json.JSONObject;
 
@@ -22,7 +23,7 @@ public class SignupActivity extends AppCompatActivity
 
     private static final String TAG = "SignupActivity";
 
-    EditText nameText;
+    EditText ageText;
     EditText emailText;
     EditText passwordText;
     Button signupButton;
@@ -35,7 +36,7 @@ public class SignupActivity extends AppCompatActivity
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        nameText = (EditText) findViewById(R.id.input_name);
+        ageText = (EditText) findViewById(R.id.input_age);
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
         signupButton = (Button) findViewById(R.id.btn_signup);
@@ -101,13 +102,13 @@ public class SignupActivity extends AppCompatActivity
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String nickname = nameText.getText().toString();
+        String age = ageText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
         ServerResponse pud = new ServerResponse(this);
-        pud.execute("signup?email=" + email + "&password=" + password + "&nickname=" + nickname);
+        pud.execute(config.SERVERADDRESS + "/validation/signup.php?email=" + email + "&password=" + password + "&age=" + age);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -137,15 +138,15 @@ public class SignupActivity extends AppCompatActivity
     public boolean validate() {
         boolean valid = true;
 
-        String name = nameText.getText().toString();
+        String age = ageText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3) {
-            nameText.setError("at least 3 characters");
+        if (age.isEmpty() || age.length() > 2) {
+            ageText.setError("invalid age");
             valid = false;
         } else {
-            nameText.setError(null);
+            ageText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

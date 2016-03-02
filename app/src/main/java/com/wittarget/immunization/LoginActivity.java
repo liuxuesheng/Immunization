@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements
         String password = passwordText.getText().toString();
 
         ServerResponse pud = new ServerResponse(this);
-        pud.execute("login?email=" + email + "&password=" + password);
+        pud.execute(config.SERVERADDRESS + "/validation/login.php?email=" + email + "&password=" + password);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
