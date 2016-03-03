@@ -22,8 +22,6 @@ public class profileFragment extends Fragment {
     private String[] info_names = {"baby"};
     private ArrayList<Map<String, Object>> mInfos = new ArrayList<Map<String, Object>>();
 
-    //define records info
-    //define records info
     private Activity activity = null;
     private String TAG = recordsFragment.class.getName();
     private ListView mListView;
@@ -40,7 +38,7 @@ public class profileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         ListView mListView = (ListView) v.findViewById(R.id.profile_list);
-        //添加联系人信息
+        //add new baby info
         for (int i = 0; i < info_names.length; i++) {
             Map<String, Object> item = new HashMap<String, Object>();
             item.put("profile_img", R.drawable.ic_home_black_24dp);
