@@ -41,93 +41,94 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
+                android:paddingRight="30dp"
                 android:text="Gender"
                 android:textSize="20sp" />
-
-            <RadioGroup
-                android:id="@+id/gender_group"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="30dp">
-
-                <RadioButton
-                    android:id="@+id/girl_button_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="30dp"
-                    android:text="girl" />
-
-                <RadioButton
-                    android:id="@+id/boy_button_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="boy" />
-            </RadioGroup>
+                android:id="@+id/input_gender"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:text="boy"/>
         </LinearLayout>
 
         <!-- birthday Label -->
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/input_birthday"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:paddingRight="30dp"
+                android:text="Birthdate"
+                android:textSize="20sp" />
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Birthday"
-                android:inputType="text"
+                android:id="@+id/input_birthday"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/colorPrimaryDark"
-                android:onClick="showDatePickerDialog"/>
-        </android.support.design.widget.TextInputLayout>
+                android:textSize="20sp"
+                android:text="Birthday"/>
+        </LinearLayout>
 
         <!-- province Label -->
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/input_province"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:paddingRight="30dp"
+                android:text="Province"
+                android:textSize="20sp" />
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Province"
-                android:inputType="text"
+                android:id="@+id/input_province"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/colorPrimaryDark" />
-        </android.support.design.widget.TextInputLayout>
+                android:textSize="20sp"
+                android:text="province"/>
+        </LinearLayout>
 
         <!-- city Label -->
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/input_city"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:paddingRight="30dp"
+                android:text="City"
+                android:textSize="20sp" />
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="City/Town"
-                android:inputType="text"
+                android:id="@+id/input_city"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/colorPrimaryDark" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/colorPrimaryDark"
-            android:padding="12dp"
-            android:text="Save"
-            android:textColor="@color/white" />
+                android:textSize="20sp"
+                android:text="city"/>
+        </LinearLayout>
 
     </LinearLayout>
 
