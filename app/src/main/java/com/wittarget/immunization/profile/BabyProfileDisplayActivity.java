@@ -2,20 +2,38 @@ package com.wittarget.immunization.profile;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.wittarget.immunization.LoginActivity;
 import com.wittarget.immunization.R;
 import com.wittarget.immunization.utils.AsyncResponse;
+import com.wittarget.immunization.utils.ServerResponse;
+import com.wittarget.immunization.utils.config;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
 public class BabyProfileDisplayActivity extends AppCompatActivity implements AsyncResponse {
+
+    private static final String TAG = "BabyProfileDisplayActivity";
+
+    JSONArray arr = null;
+    private String mainURL = "";
+
     static final int DATE_DIALOG_ID = 0;
     static final int PROVINCE_DIALOG_ID = 1;
     static final int CITY_DIALOG_ID = 2;
@@ -28,6 +46,9 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
     public TextView tvProvince;
     public TextView tvCity;
     public TextView tvGender;
+    public TextView tvEmail;
+    public EditText etInput_nickname;
+    public Button btnSave;
 
     private int mYear;
     private int mMonth;
@@ -35,6 +56,8 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
     private String mProvince;
     private String mCity;
     private String mGender;
+    private String mBirthday;
+    private int gender_number;
 
     // the call back received when the user "sets" the date in the dialog
     private DatePickerDialog.OnDateSetListener mDateSetListener =
@@ -57,6 +80,14 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         tvProvince = (TextView) findViewById(R.id.input_province);
         tvCity = (TextView) findViewById(R.id.input_city);
         tvGender = (TextView) findViewById(R.id.input_gender);
+        tvEmail = (TextView) findViewById(R.id.input_email);
+        btnSave = (Button) findViewById(R.id.btn_save);
+        etInput_nickname = (EditText)findViewById(R.id.input_nickname);
+
+
+        Intent intent = getIntent();
+        setMaintURL(config.SERVERADDRESS + "/profile/profile.php");
+
         clickTextviewListener(tvBirthday);
         clickTextviewListener(tvProvince);
         clickTextviewListener(tvCity);
@@ -69,6 +100,12 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         mDay = c.get(Calendar.DAY_OF_MONTH);
         // display the current date
         updateDisplay();
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveProfile();
+            }
+        });
     }
 
     //create textview listener
@@ -136,6 +173,11 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
                             public void onClick(DialogInterface dialog, int which) {
                                 mGender = gender_array[which];
                                 tvGender.setText(mGender);
+                                if(mGender == "boy"){
+                                    gender_number = 0;
+                                }
+                                else
+                                    gender_number = 1;
                             }
                         });
                 return genderBuilder.create();
@@ -148,8 +190,8 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         String yearString = String.valueOf(mYear);
         String monthString = setDateFormat(mMonth + 1);
         String dayString = setDateFormat(mDay);
-        String dateString = yearString + "-" + monthString + "-" + dayString;
-        tvBirthday.setText(dateString);
+        mBirthday = yearString + "-" + monthString + "-" + dayString;
+        tvBirthday.setText(mBirthday);
     }
 
     //set date to yyyy-mm-dd
@@ -165,7 +207,11 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
 
     @Override
     public void onTaskComplete(Object output) {
-
+        try {
+            arr = new JSONArray((String) output);
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -173,5 +219,36 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
 
     }
 
+    private void addObjectsToView(JSONArray jsonArray, String url) {
 
+    }
+    private String getMainURL() {
+        return this.mainURL;
+    }
+    private void setMaintURL(String page) {
+        this.mainURL = getMainURL() + page;
+    }
+
+    public void saveProfile() {
+        final ProgressDialog progressDialog = new ProgressDialog(BabyProfileDisplayActivity.this,
+                R.style.AppTheme);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Waiting...");
+        progressDialog.show();
+        ServerResponse pud = new ServerResponse(this);
+
+        String nickname = etInput_nickname.getText().toString();
+        pud.execute(config.SERVERADDRESS + "/profile/profile.php?nickname=" + nickname + "&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince+ "&city=" + mCity);
+        System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHhh"+config.SERVERADDRESS + "/profile/profile.php?nickname=" + nickname + "&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity);
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        if (config.getAuth(getApplicationContext()))
+                            System.out.println("pass");
+                        else
+                            System.out.println("failed");
+                        progressDialog.dismiss();
+                    }
+                }, 1000);
+    }
 }
