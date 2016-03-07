@@ -238,8 +238,9 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         ServerResponse pud = new ServerResponse(this);
 
         String nickname = etInput_nickname.getText().toString();
-        pud.execute(config.SERVERADDRESS + "/profile/profile.php?nickname=" + nickname + "&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince+ "&city=" + mCity);
-        System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHhh"+config.SERVERADDRESS + "/profile/profile.php?nickname=" + nickname + "&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity);
+        String URL = (config.SERVERADDRESS + "/profile/profile.php?nickname=" + nickname + "&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity).replace(" ","%20");
+        pud.execute(URL);
+        //System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHhh" + config.SERVERADDRESS + "/profile/profile.php?nickname=" + nickname + "&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity);
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
