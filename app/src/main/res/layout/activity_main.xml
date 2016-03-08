@@ -6,13 +6,18 @@
     android:orientation="vertical"
     tools:context='com.wittarget.immunization.MainActivity'>
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"></include>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:id="@+id/main_news"
@@ -29,13 +34,6 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_home_black_24dp" />
 
-            <TextView
-                android:id="@+id/main_news_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="3dp"
-                android:paddingTop="3dp"
-                android:text="News" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,13 +51,6 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_records_black_24dp" />
 
-            <TextView
-                android:id="@+id/main_records_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="3dp"
-                android:paddingTop="3dp"
-                android:text="Records" />
         </LinearLayout>
 
         <LinearLayout
@@ -77,13 +68,6 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_map_black_24dp" />
 
-            <TextView
-                android:id="@+id/main_map_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="3dp"
-                android:paddingTop="3dp"
-                android:text="Map" />
         </LinearLayout>
 
         <LinearLayout
@@ -101,13 +85,6 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_profile_black_24dp" />
 
-            <TextView
-                android:id="@+id/main_profile_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="3dp"
-                android:paddingTop="3dp"
-                android:text="Profile" />
         </LinearLayout>
     </LinearLayout>
 

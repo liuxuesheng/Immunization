@@ -2,18 +2,20 @@ package com.wittarget.immunization;
 
 import android.content.Intent;
 import android.content.IntentSender;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,7 +27,9 @@ import com.wittarget.immunization.utils.config;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener,
+        PopupMenu.OnMenuItemClickListener {
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static int screenWidth = 0;
@@ -38,13 +42,13 @@ public class MainActivity extends AppCompatActivity implements
     private myViewPager mPager;
     private int lastEnabled = 0;
     private TextView lastEnabledText = null;
-    private TextView lastTextView = null;
     private ImageView lastImageView = null;
     private LinearLayout lastLayout = null;
     private int pageIndex = 0;
     private GoogleApiClient mGoogleApiClient = null;
     private Location mLastLocation = null;
     private LocationRequest mLocationRequest = null;
+    private Toolbar toolbar = null;
 
     public static int getScreenWidth() {
         return screenWidth;
@@ -71,6 +75,11 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Set toolbar
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("News");
+
         //Get metrics
         DisplayMetrics displayMetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -81,10 +90,6 @@ public class MainActivity extends AppCompatActivity implements
 
         testImageWidth = getScreenWidth() / 2;
         testImageHeight = (int) (getTestImageWidth() * 0.618);
-
-        //set action bar to center
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.layout_actionbar);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -100,32 +105,21 @@ public class MainActivity extends AppCompatActivity implements
         final ImageView imageButton2 = (ImageView) findViewById(R.id.goto_map_iv);
         final ImageView imageButton3 = (ImageView) findViewById(R.id.goto_profile_iv);
 
-        // Tab image view
-        final TextView textButton0 = (TextView) findViewById(R.id.main_news_iv);
-        final TextView textButton1 = (TextView) findViewById(R.id.main_records_iv);
-        final TextView textButton2 = (TextView) findViewById(R.id.main_map_iv);
-        final TextView textButton3 = (TextView) findViewById(R.id.main_profile_iv);
-
         // Set last visited
         this.lastImageView = imageButton0;
         this.lastLayout = ll0;
-        this.lastTextView = textButton0;
 
         //Setup initial configuration
         imageButton0.setImageResource(R.drawable.ic_home_white_24dp);
-        textButton0.setTextColor(Color.WHITE);
-        textButton1.setTextColor(Color.BLACK);
-        textButton2.setTextColor(Color.BLACK);
-        textButton3.setTextColor(Color.BLACK);
 
         ll0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResetLayout();
-                ResetLast(ll0, imageButton0, textButton0);
+                ResetLayout(0);
+                ResetLast(ll0, imageButton0);
                 mPager.setCurrentItem(0);
                 imageButton0.setImageResource(R.drawable.ic_home_white_24dp);
-                textButton0.setTextColor(Color.WHITE);
+                getSupportActionBar().setTitle("News");
                 setPageIndex(0);
             }
         });
@@ -133,11 +127,11 @@ public class MainActivity extends AppCompatActivity implements
         ll1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResetLayout();
-                ResetLast(ll1, imageButton1, textButton1);
+                ResetLayout(1);
+                ResetLast(ll1, imageButton1);
                 mPager.setCurrentItem(1);
                 imageButton1.setImageResource(R.drawable.ic_records_white_24dp);
-                textButton1.setTextColor(Color.WHITE);
+                getSupportActionBar().setTitle("Records");
                 setPageIndex(1);
             }
         });
@@ -145,11 +139,11 @@ public class MainActivity extends AppCompatActivity implements
         ll2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResetLayout();
-                ResetLast(ll2, imageButton2, textButton2);
+                ResetLayout(2);
+                ResetLast(ll2, imageButton2);
                 mPager.setCurrentItem(2);
                 imageButton2.setImageResource(R.drawable.ic_map_white_24dp);
-                textButton2.setTextColor(Color.WHITE);
+                getSupportActionBar().setTitle("Map");
                 setPageIndex(2);
             }
         });
@@ -157,11 +151,11 @@ public class MainActivity extends AppCompatActivity implements
         ll3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResetLayout();
-                ResetLast(ll3, imageButton3, textButton3);
+                ResetLayout(3);
+                ResetLast(ll3, imageButton3);
                 mPager.setCurrentItem(3);
                 imageButton3.setImageResource(R.drawable.ic_profile_white_24dp);
-                textButton3.setTextColor(Color.WHITE);
+                getSupportActionBar().setTitle("Profile");
                 setPageIndex(3);
             }
         });
@@ -181,40 +175,47 @@ public class MainActivity extends AppCompatActivity implements
             public void onPageSelected(int position) {
                 LinearLayout myll = null;
                 ImageView myImageButton = null;
-                TextView myTextButton = null;
+                int index = 0;
 
                 switch (position) {
                     case 0:
+                        index = 0;
                         myll = ll0;
                         myImageButton = imageButton0;
-                        myTextButton = textButton0;
                         break;
                     case 1:
+                        index = 1;
                         myll = ll1;
                         myImageButton = imageButton1;
-                        myTextButton = textButton1;
                         break;
                     case 2:
+                        index = 2;
                         myll = ll2;
                         myImageButton = imageButton2;
-                        myTextButton = textButton2;
                         break;
                     case 3:
+                        index = 3;
                         myll = ll3;
                         myImageButton = imageButton3;
-                        myTextButton = textButton3;
                         break;
                     default:
+                        index = 0;
                         myll = ll0;
                         myImageButton = imageButton0;
-                        myTextButton = textButton0;
                         break;
                 }
                 if (position != getPageIndex()) {
-                    ResetLayout();
-                    ResetLast(myll, myImageButton, myTextButton);
-                    myImageButton.setImageResource(R.drawable.ic_home_white_24dp);
-                    myTextButton.setTextColor(Color.WHITE);
+                    ResetLayout(index);
+                    ResetLast(myll, myImageButton);
+                    if (index == 0)
+                        myImageButton.setImageResource(R.drawable.ic_home_white_24dp);
+                    else if (index == 1)
+                        myImageButton.setImageResource(R.drawable.ic_records_white_24dp);
+                    else if (index == 2)
+                        myImageButton.setImageResource(R.drawable.ic_map_white_24dp);
+                    else if (index == 3)
+                        myImageButton.setImageResource(R.drawable.ic_profile_white_24dp);
+
                     setPageIndex(position);
                 }
             }
@@ -238,23 +239,51 @@ public class MainActivity extends AppCompatActivity implements
         Log.d("hihihi", "2 location");
     }
 
-    private void ResetLayout() {
-        String lastString = this.lastTextView.getText().toString();
-        if (lastString.equals("News"))
-            this.lastImageView.setImageResource(R.drawable.ic_home_black_24dp);
-        else if (lastString.equals("Records"))
-            this.lastImageView.setImageResource(R.drawable.ic_records_black_24dp);
-        else if (lastString.equals("Map"))
-            this.lastImageView.setImageResource(R.drawable.ic_map_black_24dp);
-        else if (lastString.equals("Profile"))
-            this.lastImageView.setImageResource(R.drawable.ic_profile_black_24dp);
-        this.lastTextView.setTextColor(Color.BLACK);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    private void ResetLast(LinearLayout ll, ImageView iv, TextView tv) {
+    public boolean onMoreAction(MenuItem item) {
+        View menuMore = findViewById(R.id.miMore);
+        PopupMenu popup = new PopupMenu(this, menuMore);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.menu_setting);
+        popup.show();
+        return true;
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.setting_1:
+                config.setAuth(this, false);
+                config.setToken(this, "");
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return true;
+        }
+    }
+
+
+    private void ResetLayout(int index) {
+        if (getPageIndex() == 0 && index != 0)
+            this.lastImageView.setImageResource(R.drawable.ic_home_black_24dp);
+        else if (getPageIndex() == 1 && index != 1)
+            this.lastImageView.setImageResource(R.drawable.ic_records_black_24dp);
+        else if (getPageIndex() == 2 && index != 2)
+            this.lastImageView.setImageResource(R.drawable.ic_map_black_24dp);
+        else if (getPageIndex() == 3 && index != 3)
+            this.lastImageView.setImageResource(R.drawable.ic_profile_black_24dp);
+    }
+
+    private void ResetLast(LinearLayout ll, ImageView iv) {
         this.lastLayout = ll;
         this.lastImageView = iv;
-        this.lastTextView = tv;
     }
 
     private int getPageIndex() {
@@ -263,13 +292,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setPageIndex(int index) {
         this.pageIndex = index;
-    }
-
-    public void logout(View v) {
-        config.setAuth(this, false);
-        config.setToken(this, "");
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
     }
 
     @Override
