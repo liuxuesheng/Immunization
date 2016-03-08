@@ -49,12 +49,12 @@ public class RecordsFragment extends Fragment implements AsyncResponse {
         return v;
     }
 
-    @Override
-    public void onTaskComplete(Object out) {
-        try {
-            //news list
-            arr = new JSONArray((String) out);
-            JSONObject item = null;
+                                                                                                                                                                                                                                                        @Override
+                                                                                                                                                                                                                                                        public void onTaskComplete(Object out) {
+                                                                                                                                                                                                                                                            try {
+                                                                                                                                                                                                                                                                //news list
+                                                                                                                                                                                                                                                                arr = new JSONArray((String) out);
+                                                                                                                                                                                                                                                                JSONObject item = null;
             String currentId = null;
 
             for (int i = 0; i < arr.length(); i++) {

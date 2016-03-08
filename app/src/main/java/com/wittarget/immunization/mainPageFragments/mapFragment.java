@@ -15,13 +15,20 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.wittarget.immunization.R;
+import com.wittarget.immunization.utils.AsyncResponse;
+import com.wittarget.immunization.utils.ServerResponse;
 import com.wittarget.immunization.utils.config;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MapFragment extends Fragment
-        implements OnMapReadyCallback {
+        implements OnMapReadyCallback, AsyncResponse {
 
     private GoogleMap mMap;
     private Activity activity = null;
+    private JSONArray arr = null;
 
     public static MapFragment newInstance(String text) {
         MapFragment f = new MapFragment();
@@ -57,12 +64,39 @@ public class MapFragment extends Fragment
 
         if (lat != 0 & lot != 0) {
             // Add a marker in Sydney and move the camera
-            currentPlace = new LatLng(lat, lot);
+            //currentPlace = new LatLng(lat, lot);
+            currentPlace = new LatLng(43.57, -79.63);
         } else {
-            currentPlace = new LatLng(-34, 151);
+            currentPlace = new LatLng(43.57, -79.63);
         }
         mMap.addMarker(new MarkerOptions().position(currentPlace).title("I'm here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPlace, 13));
+
+        ServerResponse pud = new ServerResponse(this);
+        pud.execute(config.SERVERADDRESS + "/nearby/nearby.php?latitude=43.57&longitude=-79.63&distance=10");
     }
 
+
+    @Override
+    public void onTaskComplete(Object out) {
+        try {
+            arr = new JSONArray((String) out);  
+            JSONObject item = null;
+
+            for (int i = 0; i < arr.length(); i++) {
+                try {
+                    item = arr.getJSONObject(i);
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(item.getDouble("latitude"), item.getDouble("longitude"))).title(item.getString("name")));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onTaskStart() {
+    }
 }
