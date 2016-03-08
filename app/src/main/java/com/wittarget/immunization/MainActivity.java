@@ -1,28 +1,38 @@
 package com.wittarget.immunization;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.wittarget.immunization.utils.config;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static int screenWidth = 0;
     private static int newsImageWidth = 0;
     private static int newsImageHeight = 0;
     private static int testImageWidth = 0;
     private static int testImageHeight = 0;
-
     private FragmentManager fragmentManager;
     private myAdapter mAdapter;
     private myViewPager mPager;
@@ -32,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView lastImageView = null;
     private LinearLayout lastLayout = null;
     private int pageIndex = 0;
+    private GoogleApiClient mGoogleApiClient = null;
+    private Location mLastLocation = null;
+    private LocationRequest mLocationRequest = null;
 
     public static int getScreenWidth() {
         return screenWidth;
@@ -210,6 +223,19 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
+        Log.d("hihihi", "1 location");
+        createLocationRequest();
+        Log.d("hihihi", "2 location");
     }
 
     private void ResetLayout() {
@@ -244,5 +270,71 @@ public class MainActivity extends AppCompatActivity {
         config.setToken(this, "");
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        try {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        } catch (SecurityException ex) {
+            Log.d("hihihi", "sec expt");
+        }
+
+        if (mLastLocation == null) {
+            try{
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            } catch (SecurityException ex) {
+                Log.d("hihihi", "sec expt");
+            }
+        }else {
+            handleNewLocation(mLastLocation);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        handleNewLocation(location);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i("hihihi", "Location services connection failed with code " + connectionResult.getErrorCode());
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d("hihihi", "Location services suspended. Please reconnect.");
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void handleNewLocation(Location location) {
+        Log.d("hihihi", String.valueOf(location.getLatitude()) + " " + String.valueOf(location.getLongitude()));
     }
 }
