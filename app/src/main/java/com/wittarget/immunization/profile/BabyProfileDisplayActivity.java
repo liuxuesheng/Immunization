@@ -219,9 +219,6 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
 
     }
 
-    private void addObjectsToView(JSONArray jsonArray, String url) {
-
-    }
     private String getMainURL() {
         return this.mainURL;
     }
