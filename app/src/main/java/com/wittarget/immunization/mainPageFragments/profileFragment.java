@@ -41,7 +41,7 @@ public class profileFragment extends Fragment {
         //add new baby info
         for (int i = 0; i < info_names.length; i++) {
             Map<String, Object> item = new HashMap<String, Object>();
-            item.put("profile_img", R.drawable.ic_home_black_24dp);
+            item.put("profile_img", R.drawable.ic_home_black_36dp);
             item.put("profile_name", info_names[i]);
             mInfos.add(item);
         }

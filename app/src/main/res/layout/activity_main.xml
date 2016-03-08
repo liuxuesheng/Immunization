@@ -30,9 +30,9 @@
 
             <ImageView
                 android:id="@+id/goto_news_iv"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_home_black_24dp" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_home_black_36dp" />
 
         </LinearLayout>
 
@@ -47,9 +47,9 @@
 
             <ImageView
                 android:id="@+id/goto_records_iv"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_records_black_24dp" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_view_list_black_36dp" />
 
         </LinearLayout>
 
@@ -64,9 +64,9 @@
 
             <ImageView
                 android:id="@+id/goto_map_iv"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_map_black_24dp" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_room_black_36dp" />
 
         </LinearLayout>
 
@@ -81,9 +81,9 @@
 
             <ImageView
                 android:id="@+id/goto_profile_iv"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_profile_black_24dp" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_person_black_36dp" />
 
         </LinearLayout>
     </LinearLayout>

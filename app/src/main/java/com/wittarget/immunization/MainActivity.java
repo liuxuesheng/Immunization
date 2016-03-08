@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements
         this.lastLayout = ll0;
 
         //Setup initial configuration
-        imageButton0.setImageResource(R.drawable.ic_home_white_24dp);
+        imageButton0.setImageResource(R.drawable.ic_home_white_36dp);
 
         ll0.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements
                 ResetLayout(0);
                 ResetLast(ll0, imageButton0);
                 mPager.setCurrentItem(0);
-                imageButton0.setImageResource(R.drawable.ic_home_white_24dp);
+                imageButton0.setImageResource(R.drawable.ic_home_white_36dp);
                 getSupportActionBar().setTitle("News");
                 setPageIndex(0);
             }
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements
                 ResetLayout(1);
                 ResetLast(ll1, imageButton1);
                 mPager.setCurrentItem(1);
-                imageButton1.setImageResource(R.drawable.ic_records_white_24dp);
+                imageButton1.setImageResource(R.drawable.ic_view_list_white_36dp);
                 getSupportActionBar().setTitle("Records");
                 setPageIndex(1);
             }
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements
                 ResetLayout(2);
                 ResetLast(ll2, imageButton2);
                 mPager.setCurrentItem(2);
-                imageButton2.setImageResource(R.drawable.ic_map_white_24dp);
+                imageButton2.setImageResource(R.drawable.ic_room_white_36dp);
                 getSupportActionBar().setTitle("Map");
                 setPageIndex(2);
             }
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements
                 ResetLayout(3);
                 ResetLast(ll3, imageButton3);
                 mPager.setCurrentItem(3);
-                imageButton3.setImageResource(R.drawable.ic_profile_white_24dp);
+                imageButton3.setImageResource(R.drawable.ic_person_white_36dp);
                 getSupportActionBar().setTitle("Profile");
                 setPageIndex(3);
             }
@@ -207,14 +207,19 @@ public class MainActivity extends AppCompatActivity implements
                 if (position != getPageIndex()) {
                     ResetLayout(index);
                     ResetLast(myll, myImageButton);
-                    if (index == 0)
-                        myImageButton.setImageResource(R.drawable.ic_home_white_24dp);
-                    else if (index == 1)
-                        myImageButton.setImageResource(R.drawable.ic_records_white_24dp);
-                    else if (index == 2)
-                        myImageButton.setImageResource(R.drawable.ic_map_white_24dp);
-                    else if (index == 3)
-                        myImageButton.setImageResource(R.drawable.ic_profile_white_24dp);
+                    if (index == 0) {
+                        myImageButton.setImageResource(R.drawable.ic_home_white_36dp);
+                        getSupportActionBar().setTitle("News");
+                    } else if (index == 1) {
+                        myImageButton.setImageResource(R.drawable.ic_view_list_white_36dp);
+                        getSupportActionBar().setTitle("Records");
+                    } else if (index == 2) {
+                        myImageButton.setImageResource(R.drawable.ic_room_white_36dp);
+                        getSupportActionBar().setTitle("Map");
+                    } else if (index == 3) {
+                        myImageButton.setImageResource(R.drawable.ic_person_white_36dp);
+                        getSupportActionBar().setTitle("Profile");
+                    }
 
                     setPageIndex(position);
                 }
@@ -272,13 +277,13 @@ public class MainActivity extends AppCompatActivity implements
 
     private void ResetLayout(int index) {
         if (getPageIndex() == 0 && index != 0)
-            this.lastImageView.setImageResource(R.drawable.ic_home_black_24dp);
+            this.lastImageView.setImageResource(R.drawable.ic_home_black_36dp);
         else if (getPageIndex() == 1 && index != 1)
-            this.lastImageView.setImageResource(R.drawable.ic_records_black_24dp);
+            this.lastImageView.setImageResource(R.drawable.ic_view_list_black_36dp);
         else if (getPageIndex() == 2 && index != 2)
-            this.lastImageView.setImageResource(R.drawable.ic_map_black_24dp);
+            this.lastImageView.setImageResource(R.drawable.ic_room_black_36dp);
         else if (getPageIndex() == 3 && index != 3)
-            this.lastImageView.setImageResource(R.drawable.ic_profile_black_24dp);
+            this.lastImageView.setImageResource(R.drawable.ic_person_black_36dp);
     }
 
     private void ResetLast(LinearLayout ll, ImageView iv) {
