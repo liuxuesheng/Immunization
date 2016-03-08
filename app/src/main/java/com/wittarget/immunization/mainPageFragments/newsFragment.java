@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class newsFragment extends Fragment implements AsyncResponse {
+public class NewsFragment extends Fragment implements AsyncResponse {
 
     Activity activity;
     JSONArray arr = null;
@@ -49,8 +49,8 @@ public class newsFragment extends Fragment implements AsyncResponse {
     private LinearLayout news_container = null;
     private ViewPager newsPager = null;
 
-    public static newsFragment newInstance(String text) {
-        newsFragment f = new newsFragment();
+    public static NewsFragment newInstance(String text) {
+        NewsFragment f = new NewsFragment();
         Bundle b = new Bundle();
         b.putString("msg", text);
         f.setArguments(b);

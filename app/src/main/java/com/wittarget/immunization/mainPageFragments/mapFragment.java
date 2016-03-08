@@ -17,14 +17,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.wittarget.immunization.R;
 import com.wittarget.immunization.utils.config;
 
-public class mapFragment extends Fragment
+public class MapFragment extends Fragment
         implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Activity activity = null;
 
-    public static mapFragment newInstance(String text) {
-        mapFragment f = new mapFragment();
+    public static MapFragment newInstance(String text) {
+        MapFragment f = new MapFragment();
         Bundle b = new Bundle();
         b.putString("msg", text);
         f.setArguments(b);

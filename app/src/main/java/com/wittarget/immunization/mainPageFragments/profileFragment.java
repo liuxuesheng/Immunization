@@ -11,23 +11,22 @@ import android.widget.ListView;
 
 import com.wittarget.immunization.R;
 import com.wittarget.immunization.profile.ShowProfileAdapter;
-import com.wittarget.immunization.records.ShowRecordsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class profileFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     private String[] info_names = {"baby"};
     private ArrayList<Map<String, Object>> mInfos = new ArrayList<Map<String, Object>>();
 
     private Activity activity = null;
-    private String TAG = recordsFragment.class.getName();
+    private String TAG = RecordsFragment.class.getName();
     private ListView mListView;
 
-    public static profileFragment newInstance(String text) {
-        profileFragment f = new profileFragment();
+    public static ProfileFragment newInstance(String text) {
+        ProfileFragment f = new ProfileFragment();
         Bundle b = new Bundle();
         b.putString("msg", text);
         f.setArguments(b);
