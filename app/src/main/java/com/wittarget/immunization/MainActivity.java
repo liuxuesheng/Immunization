@@ -293,12 +293,12 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         if (mLastLocation == null) {
-            try{
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            try {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             } catch (SecurityException ex) {
                 Log.d("hihihi", "sec expt");
             }
-        }else {
+        } else {
             handleNewLocation(mLastLocation);
         }
     }
@@ -336,5 +336,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private void handleNewLocation(Location location) {
         Log.d("hihihi", String.valueOf(location.getLatitude()) + " " + String.valueOf(location.getLongitude()));
+        config.setLocation(this, Float.parseFloat(String.valueOf(location.getLatitude())), Float.parseFloat(String.valueOf(location.getLongitude())));
     }
 }

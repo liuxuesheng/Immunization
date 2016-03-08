@@ -15,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.wittarget.immunization.R;
+import com.wittarget.immunization.utils.config;
 
 public class mapFragment extends Fragment
         implements OnMapReadyCallback {
@@ -47,12 +48,21 @@ public class mapFragment extends Fragment
     }
 
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        Float[] currentLocation = config.getLocation(activity);
+        Float lat = currentLocation[0];
+        Float lot = currentLocation[1];
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap = googleMap;
+        LatLng currentPlace = null;
+
+        if (lat != 0 & lot != 0) {
+            // Add a marker in Sydney and move the camera
+            currentPlace = new LatLng(lat, lot);
+        } else {
+            currentPlace = new LatLng(-34, 151);
+        }
+        mMap.addMarker(new MarkerOptions().position(currentPlace).title("I'm here"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPlace, 13));
     }
 
 }
