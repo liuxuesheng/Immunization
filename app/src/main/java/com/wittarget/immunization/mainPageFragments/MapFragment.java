@@ -7,12 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.wittarget.immunization.R;
 import com.wittarget.immunization.utils.AsyncResponse;
@@ -24,7 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MapFragment extends Fragment
-        implements OnMapReadyCallback, AsyncResponse {
+        implements OnMapReadyCallback, AsyncResponse, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private Activity activity = null;
@@ -54,6 +56,7 @@ public class MapFragment extends Fragment
         this.activity = (Activity) context;
     }
 
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         Float[] currentLocation = config.getLocation(activity);
         Float lat = currentLocation[0];
@@ -72,21 +75,27 @@ public class MapFragment extends Fragment
         mMap.addMarker(new MarkerOptions().position(currentPlace).title("I'm here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPlace, 13));
 
+        mMap.setOnInfoWindowClickListener(this);
+
         ServerResponse pud = new ServerResponse(this);
         pud.execute(config.SERVERADDRESS + "/nearby/nearby.php?latitude=43.57&longitude=-79.63&distance=10");
     }
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(activity, "Info window clicked", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onTaskComplete(Object out) {
         try {
-            arr = new JSONArray((String) out);  
+            arr = new JSONArray((String) out);
             JSONObject item = null;
 
             for (int i = 0; i < arr.length(); i++) {
                 try {
                     item = arr.getJSONObject(i);
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(item.getDouble("latitude"), item.getDouble("longitude"))).title(item.getString("name")));
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(item.getDouble("latitude"), item.getDouble("longitude"))).title(item.getString("name")).snippet(item.getString("address")));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
