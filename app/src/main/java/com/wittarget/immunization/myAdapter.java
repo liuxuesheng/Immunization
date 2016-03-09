@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.wittarget.immunization.mainPageFragments.recordsFragment;
-import com.wittarget.immunization.mainPageFragments.mapFragment;
-import com.wittarget.immunization.mainPageFragments.newsFragment;
-import com.wittarget.immunization.mainPageFragments.profileFragment;
+import com.wittarget.immunization.mainPageFragments.RecordsFragment;
+import com.wittarget.immunization.mainPageFragments.MapFragment;
+import com.wittarget.immunization.mainPageFragments.NewsFragment;
+import com.wittarget.immunization.mainPageFragments.ProfileFragment;
 
 public class myAdapter extends FragmentPagerAdapter {
     static final int NUM_ITEMS = 4;
@@ -25,13 +25,13 @@ public class myAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return newsFragment.newInstance("News");
+                return NewsFragment.newInstance("News");
             case 1:
-                return recordsFragment.newInstance("Records");
+                return RecordsFragment.newInstance("Records");
             case 2:
-                return mapFragment.newInstance("Map");
+                return MapFragment.newInstance("Map");
             case 3:
-                return profileFragment.newInstance("Profile");
+                return ProfileFragment.newInstance("Profile");
             default:
                 return null;
         }

@@ -25,13 +25,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class recordsFragment extends Fragment implements AsyncResponse {
+public class RecordsFragment extends Fragment implements AsyncResponse {
     Activity activity;
     JSONArray arr = null;
     private LinearLayout records_container = null;
 
-    public static recordsFragment newInstance(String text) {
-        recordsFragment f = new recordsFragment();
+    public static RecordsFragment newInstance(String text) {
+        RecordsFragment f = new RecordsFragment();
         Bundle b = new Bundle();
         b.putString("msg", text);
         f.setArguments(b);
@@ -49,12 +49,12 @@ public class recordsFragment extends Fragment implements AsyncResponse {
         return v;
     }
 
-    @Override
-    public void onTaskComplete(Object out) {
-        try {
-            //news list
-            arr = new JSONArray((String) out);
-            JSONObject item = null;
+                                                                                                                                                                                                                                                        @Override
+                                                                                                                                                                                                                                                        public void onTaskComplete(Object out) {
+                                                                                                                                                                                                                                                            try {
+                                                                                                                                                                                                                                                                //news list
+                                                                                                                                                                                                                                                                arr = new JSONArray((String) out);
+                                                                                                                                                                                                                                                                JSONObject item = null;
             String currentId = null;
 
             for (int i = 0; i < arr.length(); i++) {
