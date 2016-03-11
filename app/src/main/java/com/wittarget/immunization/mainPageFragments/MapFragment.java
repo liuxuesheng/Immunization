@@ -67,10 +67,10 @@ public class MapFragment extends Fragment
 
         if (lat != 0 & lot != 0) {
             // Add a marker in Sydney and move the camera
-            //currentPlace = new LatLng(lat, lot);
-            currentPlace = new LatLng(43.57, -79.63);
+            currentPlace = new LatLng(lat, lot);
+            //currentPlace = new LatLng(43.57, -79.63);
         } else {
-            currentPlace = new LatLng(43.57, -79.63);
+            currentPlace = new LatLng(48.42, -89.25);
         }
         mMap.addMarker(new MarkerOptions().position(currentPlace).title("I'm here"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPlace, 13));
@@ -78,7 +78,8 @@ public class MapFragment extends Fragment
         mMap.setOnInfoWindowClickListener(this);
 
         ServerResponse pud = new ServerResponse(this);
-        pud.execute(config.SERVERADDRESS + "/nearby/nearby.php?latitude=43.57&longitude=-79.63&distance=10");
+        pud.execute(config.SERVERADDRESS + "/nearby/nearby.php?latitude="+currentPlace.latitude+"&longitude="+currentPlace.longitude+"&distance=10");
+        System.out.println("loooooooooooooo"+config.SERVERADDRESS + "/nearby/nearby.php?latitude="+currentPlace.latitude+"&longitude="+currentPlace.longitude+"&distance=10");
     }
 
     @Override
