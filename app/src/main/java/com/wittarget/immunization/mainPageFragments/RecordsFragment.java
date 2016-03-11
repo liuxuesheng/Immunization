@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wittarget.immunization.MainActivity;
 import com.wittarget.immunization.R;
 import com.wittarget.immunization.records.RecordsDisplayActivity;
 import com.wittarget.immunization.utils.AsyncResponse;
@@ -49,12 +51,12 @@ public class RecordsFragment extends Fragment implements AsyncResponse {
         return v;
     }
 
-                                                                                                                                                                                                                                                        @Override
-                                                                                                                                                                                                                                                        public void onTaskComplete(Object out) {
-                                                                                                                                                                                                                                                            try {
-                                                                                                                                                                                                                                                                //news list
-                                                                                                                                                                                                                                                                arr = new JSONArray((String) out);
-                                                                                                                                                                                                                                                                JSONObject item = null;
+    @Override
+    public void onTaskComplete(Object out) {
+        try {
+            //news list
+            arr = new JSONArray((String) out);
+            JSONObject item = null;
             String currentId = null;
 
             for (int i = 0; i < arr.length(); i++) {
@@ -156,6 +158,12 @@ public class RecordsFragment extends Fragment implements AsyncResponse {
                         }
                     });
 
+                    checkbox.setGravity(Gravity.RIGHT);
+
+                    LinearLayout.LayoutParams layoutParamsBt = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsBt.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+                    checkbox.setLayoutParams(layoutParamsBt);
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -164,19 +172,24 @@ public class RecordsFragment extends Fragment implements AsyncResponse {
                 if (flag == true) {
                     records_container.addView(title_textview);
                 } else {
-                    LinearLayout linearLayoutH = new LinearLayout(activity);
-                    linearLayoutH.setOrientation(LinearLayout.HORIZONTAL);
-                    //linearLayoutH.addView(imageView);
                     LinearLayout linearLayoutV = new LinearLayout(activity);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MainActivity.getScreenWidth()*7/8, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 0, 0, 0);
+                    linearLayoutV.setLayoutParams(layoutParams);
                     linearLayoutV.setOrientation(LinearLayout.VERTICAL);
                     linearLayoutV.addView(title_textview);
                     linearLayoutV.addView(subtitle_textview);
-                    linearLayoutH.addView(checkbox);
+
+                    LinearLayout linearLayoutH = new LinearLayout(activity);
+                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams2.setMargins(0, 20, 0, 20);
+                    linearLayoutH.setLayoutParams(layoutParams2);
+                    linearLayoutH.setOrientation(LinearLayout.HORIZONTAL);
+
                     linearLayoutH.addView(linearLayoutV);
+                    linearLayoutH.addView(checkbox);
 
                     records_container.addView(linearLayoutH);
-                    System.out.println("HHHHHHHHHHHHHHH");
-
                 }
 
                 addDivider(records_container, Color.LTGRAY, 3);

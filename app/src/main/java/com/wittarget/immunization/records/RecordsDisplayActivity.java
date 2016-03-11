@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 public class RecordsDisplayActivity extends Activity implements AsyncResponse {
     static final int DATE_DIALOG_ID = 0;
     public String current_date;
-    public ArrayList<TextView> sectionpool = new ArrayList<TextView>();
     JSONArray arr = null;
     private String mainURL = "";
     private TextView title = null;
@@ -38,7 +38,8 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
     private int mYear = 2016;
     private int mMonth = 2;
     private int mDay = 14;
-    private TextView mySectionTextView = null;
+    private LinearLayout myLinearLayout = null;
+    private ArrayList<LinearLayout> textViewList = null;
 
     // the call back received when the user "sets" the date in the dialog
     private DatePickerDialog.OnDateSetListener mDateSetListener =
@@ -57,16 +58,38 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
                     sectionTextView.setTextSize(20);
                     sectionTextView.setTextColor(Color.BLACK);
                     sectionTextView.setBackgroundColor(Color.TRANSPARENT);
-                    sectionTextView.setOnClickListener(new View.OnClickListener() {
+                    sectionTextView.setText(current_date);
+
+                    int index = textViewList.indexOf(myLinearLayout);
+
+                    Button bt = new Button(getApplicationContext());
+                    bt.setBackground(getDrawable(R.drawable.ic_event_black_24dp));
+                    LinearLayout.LayoutParams layoutBt = new LinearLayout.LayoutParams(90, 90);
+                    layoutBt.setMargins(0, 20, 60, 10);
+                    bt.setLayoutParams(layoutBt);
+
+                    final LinearLayout ll = new LinearLayout(getApplicationContext());
+                    LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layout.setMargins(0, 20, 0, 20);
+                    ll.setLayoutParams(layout);
+                    ll.setOrientation(LinearLayout.HORIZONTAL);
+
+                    ll.addView(bt);
+                    ll.addView(sectionTextView);
+
+                    bt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mySectionTextView = sectionTextView;
+                            myLinearLayout = ll;
                             showDialog(DATE_DIALOG_ID);
                         }
                     });
-                    sectionTextView.setText(current_date);
-                    bookDate_container.removeView(mySectionTextView);
-                    bookDate_container.addView(sectionTextView);
+
+                    textViewList.remove(myLinearLayout);
+                    textViewList.add(index, ll);
+
+                    bookDate_container.removeView(myLinearLayout);
+                    bookDate_container.addView(ll, index);
                 }
             };
 
@@ -112,10 +135,10 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
     }
 
     private void addObjectsToView(JSONArray jsonArray, String url) {
+        textViewList = new ArrayList<LinearLayout>(jsonArray.length());
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject item = jsonArray.getJSONObject(i);
-
 
                 if (item.getString("type").equals("title_records")) {
                     title.setText(item.getString("name"));
@@ -138,15 +161,33 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
                             sectionTextView.setPadding(20, 10, 30, 10);
                             sectionTextView.setTextSize(20);
                             sectionTextView.setBackgroundColor(Color.TRANSPARENT);
-                            sectionTextView.setOnClickListener(new View.OnClickListener() {
+                            sectionTextView.setText(current_date);
+
+                            Button bt = new Button(this);
+                            bt.setBackground(getDrawable(R.drawable.ic_event_black_24dp));
+                            LinearLayout.LayoutParams layoutBt = new LinearLayout.LayoutParams(90, 90);
+                            layoutBt.setMargins(0, 20, 60, 10);
+                            bt.setLayoutParams(layoutBt);
+
+                            final LinearLayout ll = new LinearLayout(this);
+                            LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            layout.setMargins(0, 20, 0, 20);
+                            ll.setLayoutParams(layout);
+                            ll.setOrientation(LinearLayout.HORIZONTAL);
+
+                            ll.addView(bt);
+                            ll.addView(sectionTextView);
+
+                            bt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mySectionTextView = sectionTextView;
+                                    myLinearLayout = ll;
                                     showDialog(DATE_DIALOG_ID);
                                 }
                             });
-                            sectionTextView.setText(current_date);
-                            bookDate_container.addView(sectionTextView);
+
+                            textViewList.add(j, ll);
+                            bookDate_container.addView(ll);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
