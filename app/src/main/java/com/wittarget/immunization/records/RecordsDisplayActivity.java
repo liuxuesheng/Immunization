@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class RecordsDisplayActivity extends Activity implements AsyncResponse {
     static final int DATE_DIALOG_ID = 0;
@@ -34,10 +35,11 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
     private TextView title = null;
     private TextView subtitle = null;
     private TextView body_records = null;
+    public Button btnSchedule;
     private LinearLayout bookDate_container = null;
     private int mYear = 2016;
     private int mMonth = 2;
-    private int mDay = 14;
+    private int mDay = 11;
     private LinearLayout myLinearLayout = null;
     private ArrayList<LinearLayout> textViewList = null;
 
@@ -128,10 +130,26 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
         subtitle = (TextView) this.findViewById(R.id.subtitle_records);
         body_records = (TextView) this.findViewById(R.id.body_records);
         bookDate_container = (LinearLayout) this.findViewById(R.id.bookDate_layout);
+        btnSchedule = (Button)findViewById(R.id.button_Schedule);
+        btnSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                Intent intent = new Intent(Intent.ACTION_EDIT);
+                intent.setType("vnd.android.cursor.item/event");
+                intent.putExtra("beginTime", cal.getTimeInMillis());
+                intent.putExtra("allDay", true);
+                intent.putExtra("rrule", "FREQ=YEARLY");
+                intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
+                intent.putExtra("title", "Schedule a time to inject immunization");
+                System.out.println("Schedule:"+ cal.getTimeInMillis());
+                startActivity(intent);
+            }
+        });
 
         ServerResponse pud = new ServerResponse(this);
         pud.execute(getMainURL() + "?page=" + intent.getStringExtra("record") + "&section=" + intent.getStringExtra("section"));
-        System.out.println("HHHHHHHHHHrecords:" + getMainURL() + "?page=" + intent.getStringExtra("record") + "&section=" + intent.getStringExtra("section"));
+
     }
 
     private void addObjectsToView(JSONArray jsonArray, String url) {
