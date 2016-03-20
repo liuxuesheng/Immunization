@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class ProfileFragment extends Fragment {
 
-    private String[] info_names = {"baby"};
+    private String[] info_names = {"Babies Management","About App"};
     private ArrayList<Map<String, Object>> mInfos = new ArrayList<Map<String, Object>>();
 
     private Activity activity = null;
