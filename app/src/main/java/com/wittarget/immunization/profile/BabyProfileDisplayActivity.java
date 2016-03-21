@@ -74,7 +74,6 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby_profile);
-
         //date picker presentation
         tvBirthday = (TextView) findViewById(R.id.input_birthday);//button for showing date picker dialog
         tvProvince = (TextView) findViewById(R.id.input_province);

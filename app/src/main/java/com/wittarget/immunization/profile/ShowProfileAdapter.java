@@ -55,13 +55,25 @@ public class ShowProfileAdapter extends BaseAdapter {
             listItemView.profile_name.setText((String) listItems.get(
                     position).get("profile_name"));
 
-            listItemView.profile_name.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(context, BabyProfileDisplayActivity.class);
-                    context.startActivity(intent);
-                }
-            });
+            if(listItemView.profile_name.getText() == "Babies Management"){
+                listItemView.profile_name.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        //intent.setClass(context, BabyProfileDisplayActivity.class);
+                        intent.setClass(context,BabyManagementActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            if(listItemView.profile_name.getText() =="About App"){
+                listItemView.profile_name.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+//                        Intent intent = new Intent();
+//                        intent.setClass(context, BabyProfileDisplayActivity.class);
+//                        context.startActivity(intent);
+                    }
+                });
+            }
 
         } else {
             listItemView = (ListItemView) convertView.getTag();
