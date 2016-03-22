@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,10 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wittarget.immunization.LoginActivity;
 import com.wittarget.immunization.R;
+import com.wittarget.immunization.mainPageFragments.ProfileFragment;
+import com.wittarget.immunization.records.RecordsDisplayActivity;
 import com.wittarget.immunization.utils.AsyncResponse;
 import com.wittarget.immunization.utils.ServerResponse;
 import com.wittarget.immunization.utils.config;
@@ -25,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class BabyProfileDisplayActivity extends AppCompatActivity implements AsyncResponse {
@@ -33,14 +39,18 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
 
     JSONArray arr = null;
     private String mainURL = "";
+    private String token = "";
+    private String email;
 
     static final int DATE_DIALOG_ID = 0;
     static final int PROVINCE_DIALOG_ID = 1;
-    static final int CITY_DIALOG_ID = 2;
+    static final int ONTARIO_CITY_DIALOG_ID = 20;
+    static final int QUEBEC_CITY_DIALOG_ID = 21;
     static final int GENDER_DIALOG_ID = 3;
 
     static final String[] province_array = {"Ontario", "Quebec", "Nova Scotia", "New Brunswick", "Manitoba", "British Columbia", "Prince Edward Island", "Saskatchewan", "Alberta", "Newfoundland and Labrador"};
-    static final String[] city_array = {"Thunder Bay", "Mississauga"};
+    static final String[] ontario_city_array = {"Thunder Bay", "Mississauga"};
+    static final String[] quebec_city_array = {"Montreal", "Quebec City"};
     static final String[] gender_array = {"girl", "boy"};
     public TextView tvBirthday;
     public TextView tvProvince;
@@ -74,6 +84,8 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby_profile);
+        token = config.getToken(this);
+
         //date picker presentation
         tvBirthday = (TextView) findViewById(R.id.input_birthday);//button for showing date picker dialog
         tvProvince = (TextView) findViewById(R.id.input_province);
@@ -83,9 +95,13 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         btnSave = (Button) findViewById(R.id.btn_save);
         etInput_nickname = (EditText)findViewById(R.id.input_nickname);
 
+        setMaintURL(config.SERVERADDRESS + "/profile/getEmail.php");
+        ServerResponse pud = new ServerResponse(this);
+        pud.execute(getMainURL() + "?token=" + token);
+        System.out.println(getMainURL() + "?token=" + token);
 
-        Intent intent = getIntent();
-        setMaintURL(config.SERVERADDRESS + "/profile/profile.php");
+       // Intent intent = getIntent();
+        //setMaintURL(config.SERVERADDRESS + "/profile/profile.php");
 
         clickTextviewListener(tvBirthday);
         clickTextviewListener(tvProvince);
@@ -125,7 +141,12 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         } else if (v == tvCity) {
             v.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    showDialog(CITY_DIALOG_ID);
+                    if(mProvince ==province_array[0]){
+                        showDialog(ONTARIO_CITY_DIALOG_ID);
+                    }
+                    else{
+                        showDialog(QUEBEC_CITY_DIALOG_ID);
+                    }
                 }
             });
         } else if (v == tvGender) {
@@ -145,6 +166,7 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         switch (id) {
             case DATE_DIALOG_ID:
                 return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
+
             case PROVINCE_DIALOG_ID:
                 AlertDialog.Builder provinceBuilder = new AlertDialog.Builder(this);
                 provinceBuilder.setTitle("Select Province")
@@ -155,16 +177,30 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
                             }
                         });
                 return provinceBuilder.create();
-            case CITY_DIALOG_ID:
-                AlertDialog.Builder cityBuilder = new AlertDialog.Builder(this);
-                cityBuilder.setTitle("Select City")
-                        .setItems(city_array, new DialogInterface.OnClickListener() {
+
+            case ONTARIO_CITY_DIALOG_ID:
+                AlertDialog.Builder cityBuilder0 = new AlertDialog.Builder(this);
+                System.out.println("Myprovince"+ mProvince);
+                    cityBuilder0.setTitle("Select City")
+                            .setItems(ontario_city_array, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mCity = ontario_city_array[which];
+                                    tvCity.setText(mCity);
+                                }
+                            });
+                return cityBuilder0.create();
+
+            case QUEBEC_CITY_DIALOG_ID:
+                AlertDialog.Builder cityBuilder1 = new AlertDialog.Builder(this);
+                System.out.println("Myprovince"+ mProvince);
+                cityBuilder1.setTitle("Select City")
+                        .setItems(quebec_city_array, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                mCity = city_array[which];
+                                mCity = quebec_city_array[which];
                                 tvCity.setText(mCity);
                             }
                         });
-                return cityBuilder.create();
+                return cityBuilder1.create();
             case GENDER_DIALOG_ID:
                 AlertDialog.Builder genderBuilder = new AlertDialog.Builder(this);
                 genderBuilder.setTitle("Select Gender")
@@ -205,14 +241,30 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
     }
 
     @Override
-    public void onTaskComplete(Object output) {
+    public void onTaskComplete(Object out) {
         try {
-            arr = new JSONArray((String) output);
+            Log.d("system time2: ", "" + System.currentTimeMillis());
+            arr = new JSONArray((String) out);
+            Log.d("system time3: ", "" + System.currentTimeMillis());
+            addObjectsToView(arr, getMainURL());
+            Log.d("system time4: ", "" + System.currentTimeMillis());
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
     }
 
+    private void addObjectsToView(JSONArray jsonArray, String url) {
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject item = jsonArray.getJSONObject(i);
+                tvEmail.setText(item.getString("email"));
+                email = item.getString("email");
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
     @Override
     public void onTaskStart() {
 
@@ -234,9 +286,9 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         ServerResponse pud = new ServerResponse(this);
 
         String nickname = etInput_nickname.getText().toString();
-        String URL = (config.SERVERADDRESS + "/profile/profile.php?nickname=" + nickname + "&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity).replace(" ","%20");
+        String URL = (config.SERVERADDRESS + "/profile/addBaby.php?nickname=" + nickname +"&email="+email+"&token="+token +"&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity).replace(" ","%20");
+        System.out.println("add baby: " + URL);
         pud.execute(URL);
-        //System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHhh" + config.SERVERADDRESS + "/profile/profile.php?nickname=" + nickname + "&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity);
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -247,5 +299,8 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
                         progressDialog.dismiss();
                     }
                 }, 1000);
+        Intent myIntent = null;
+        myIntent = new Intent(BabyProfileDisplayActivity.this, BabyManagementActivity.class);
+        startActivity(myIntent);
     }
 }
