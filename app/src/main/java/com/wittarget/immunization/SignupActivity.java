@@ -23,7 +23,6 @@ public class SignupActivity extends AppCompatActivity
 
     private static final String TAG = "SignupActivity";
 
-    EditText ageText;
     EditText emailText;
     EditText passwordText;
     Button signupButton;
@@ -36,7 +35,6 @@ public class SignupActivity extends AppCompatActivity
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        ageText = (EditText) findViewById(R.id.input_age);
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
         signupButton = (Button) findViewById(R.id.btn_signup);
@@ -102,13 +100,12 @@ public class SignupActivity extends AppCompatActivity
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String age = ageText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
         ServerResponse pud = new ServerResponse(this);
-        pud.execute(config.SERVERADDRESS + "/validation/signup.php?email=" + email + "&password=" + password + "&age=" + age);
+        pud.execute(config.SERVERADDRESS + "/validation/signup.php?email=" + email + "&password=" + password);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -138,16 +135,9 @@ public class SignupActivity extends AppCompatActivity
     public boolean validate() {
         boolean valid = true;
 
-        String age = ageText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
-        if (age.isEmpty() || age.length() > 2) {
-            ageText.setError("invalid age");
-            valid = false;
-        } else {
-            ageText.setError(null);
-        }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("enter a valid email address");
