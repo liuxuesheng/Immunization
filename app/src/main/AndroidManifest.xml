@@ -54,6 +54,7 @@
         <activity android:name=".profile.BabyProfileDisplayActivity"/>
         <activity android:name=".profile.BabyManagementActivity"/>
         <activity android:name=".profile.BabyProfileChangeActivity"/>
+        <activity android:name=".profile.AppInfoActivity"/>
     </application>
 
 </manifest>

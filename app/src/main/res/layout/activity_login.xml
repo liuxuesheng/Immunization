@@ -76,13 +76,13 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="bypass"
-        android:src="@drawable/ic_highlight_off_white_24dp" />
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="right|top"-->
+        <!--android:layout_marginRight="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:onClick="bypass"-->
+        <!--android:src="@drawable/ic_highlight_off_white_24dp" />-->
 
 </FrameLayout>

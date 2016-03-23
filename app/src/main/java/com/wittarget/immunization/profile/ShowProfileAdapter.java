@@ -68,9 +68,9 @@ public class ShowProfileAdapter extends BaseAdapter {
             if(listItemView.profile_name.getText() =="About App"){
                 listItemView.profile_name.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-//                        Intent intent = new Intent();
-//                        intent.setClass(context, BabyProfileDisplayActivity.class);
-//                        context.startActivity(intent);
+                        Intent intent = new Intent();
+                        intent.setClass(context, AppInfoActivity.class);
+                        context.startActivity(intent);
                     }
                 });
             }
