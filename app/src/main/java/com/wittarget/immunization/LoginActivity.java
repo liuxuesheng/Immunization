@@ -198,10 +198,10 @@ public class LoginActivity extends AppCompatActivity implements
         return valid;
     }
 
-    public void bypass(View v) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-    }
+//    public void bypass(View v) {
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//        startActivity(intent);
+//    }
 }
 
 

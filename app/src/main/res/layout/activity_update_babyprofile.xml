@@ -41,21 +41,31 @@
         </LinearLayout>
 
         <!-- Nickname -->
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/input_nickname"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:paddingRight="30dp"
+                android:text="Nickname "
+                android:textSize="20sp" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nickname"
-                android:inputType="text"
+                android:id="@+id/input_nickname"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/colorPrimaryDark" />
-        </android.support.design.widget.TextInputLayout>
+                android:textSize="20sp"
+                android:text="Nickname"/>
+        </LinearLayout>
 
         <!-- gender Label -->
         <LinearLayout
@@ -158,16 +168,35 @@
                 android:text="city"/>
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_save"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/colorPrimaryDark"
-            android:padding="12dp"
-            android:text="Save"
-            android:textColor="@color/white" />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/colorPrimaryDark"
+                android:padding="12dp"
+                android:layout_marginRight="20dp"
+                android:text="UPDATE"
+                android:textColor="@color/white" />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/colorPrimaryDark"
+                android:padding="12dp"
+                android:layout_marginLeft="20dp"
+                android:text="DELETE"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -35,7 +36,6 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
     private TextView title = null;
     private TextView subtitle = null;
     private TextView body_records = null;
-    public Button btnSchedule;
     private LinearLayout bookDate_container = null;
     private int mYear = 2016;
     private int mMonth = 2;
@@ -130,22 +130,6 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
         subtitle = (TextView) this.findViewById(R.id.subtitle_records);
         body_records = (TextView) this.findViewById(R.id.body_records);
         bookDate_container = (LinearLayout) this.findViewById(R.id.bookDate_layout);
-        btnSchedule = (Button)findViewById(R.id.button_Schedule);
-        btnSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                Intent intent = new Intent(Intent.ACTION_EDIT);
-                intent.setType("vnd.android.cursor.item/event");
-                intent.putExtra("beginTime", cal.getTimeInMillis());
-                intent.putExtra("allDay", true);
-                intent.putExtra("rrule", "FREQ=YEARLY");
-                intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
-                intent.putExtra("title", "Schedule a time to inject immunization");
-                System.out.println("Schedule:"+ cal.getTimeInMillis());
-                startActivity(intent);
-            }
-        });
 
         ServerResponse pud = new ServerResponse(this);
         pud.execute(getMainURL() + "?page=" + intent.getStringExtra("record") + "&section=" + intent.getStringExtra("section"));
@@ -174,9 +158,9 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
                         try {
                             final TextView sectionTextView = new TextView(this);
 
-                            current_date = String.valueOf(mYear) + "-" + setDateFormat(mMonth + 1) + "-" + setDateFormat(mDay);
+                            current_date = String.valueOf(mYear) + "-" + setDateFormat(mMonth + 1 + j*1) + "-" + setDateFormat(mDay);
 
-                            sectionTextView.setPadding(20, 10, 30, 10);
+                            sectionTextView.setPadding(20, 10, 60, 10);
                             sectionTextView.setTextSize(20);
                             sectionTextView.setBackgroundColor(Color.TRANSPARENT);
                             sectionTextView.setText(current_date);
@@ -187,6 +171,13 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
                             layoutBt.setMargins(0, 20, 60, 10);
                             bt.setLayoutParams(layoutBt);
 
+                            AppCompatButton bt_schedule = new AppCompatButton(this);
+                            bt_schedule.setText("Schedule");
+                            bt_schedule.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            bt_schedule.setTextColor(Color.WHITE);
+                            LinearLayout.LayoutParams layoutBt2 = new LinearLayout.LayoutParams(90, 90);
+                            layoutBt2.setMargins(0, 20, 60, 10);
+
                             final LinearLayout ll = new LinearLayout(this);
                             LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                             layout.setMargins(0, 20, 0, 20);
@@ -195,12 +186,30 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
 
                             ll.addView(bt);
                             ll.addView(sectionTextView);
+                            ll.addView(bt_schedule);
 
                             bt.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     myLinearLayout = ll;
                                     showDialog(DATE_DIALOG_ID);
+                                }
+                            });
+
+                            bt_schedule.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Calendar cal = Calendar.getInstance();
+                                    Intent intent = new Intent(Intent.ACTION_EDIT);
+                                    intent.setType("vnd.android.cursor.item/event");
+                                    intent.putExtra("beginTime", cal.getTimeInMillis());
+                                    intent.putExtra("allDay", true);
+                                    intent.putExtra("rrule", "FREQ=YEARLY");
+                                    intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
+                                    intent.putExtra("title", "Schedule a time to inject immunization");
+                                    System.out.println("Schedule:"+ cal.getTimeInMillis());
+                                    startActivity(intent);
+
                                 }
                             });
 

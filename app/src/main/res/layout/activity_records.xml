@@ -69,40 +69,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/button_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/bookDate_layout"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/button_share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/colorPrimary"
-                android:elevation="6dp"
-                android:padding="10dp"
-                android:text="Share"
-                android:textColor="@color/white" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/button_Schedule"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/colorPrimary"
-                android:elevation="6dp"
-                android:padding="10dp"
-                android:text="Schedule"
-                android:textColor="@color/white" />
-        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
