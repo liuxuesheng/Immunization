@@ -64,7 +64,30 @@
                 android:textSize="20sp"
                 android:text="Guochao He, Yiwen Huang"/>
         </LinearLayout>
+        <!--developer /-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:paddingRight="10dp"
+                android:text="Description: "
+                android:textSize="20sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:text="The Immunization app provides citizens in Canada with the ability to manage their families' vaccination records with the use of their smart phones."/>
+        </LinearLayout>
 
 
     </LinearLayout>
