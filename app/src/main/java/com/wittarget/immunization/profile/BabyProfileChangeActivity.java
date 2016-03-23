@@ -1,13 +1,12 @@
 package com.wittarget.immunization.profile;
 
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,13 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.wittarget.immunization.LoginActivity;
 import com.wittarget.immunization.R;
-import com.wittarget.immunization.mainPageFragments.ProfileFragment;
-import com.wittarget.immunization.records.RecordsDisplayActivity;
 import com.wittarget.immunization.utils.AsyncResponse;
 import com.wittarget.immunization.utils.ServerResponse;
 import com.wittarget.immunization.utils.config;
@@ -31,12 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
-public class BabyProfileDisplayActivity extends AppCompatActivity implements AsyncResponse {
-
-    private static final String TAG = "BabyProfileDisplayActivity";
+public class BabyProfileChangeActivity extends AppCompatActivity implements AsyncResponse {
+    private static final String TAG = "BabyProfileChangeActivity";
     private Toolbar toolbar = null;
 
     JSONArray arr = null;
@@ -75,8 +68,9 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
     public TextView tvCity;
     public TextView tvGender;
     public TextView tvEmail;
-    public EditText etInput_nickname;
-    public Button btnSave;
+    public TextView tvNickname;
+    public Button btnUpdate;
+    public Button btnDelete;
 
     private int mYear;
     private int mMonth;
@@ -85,6 +79,7 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
     private String mCity;
     private String mGender;
     private String mBirthday;
+    private String nickname;
     private int gender_number;
 
     // the call back received when the user "sets" the date in the dialog
@@ -101,13 +96,14 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_baby_profile);
+        setContentView(R.layout.activity_update_babyprofile);
         token = config.getToken(this);
-
+        Intent intent = getIntent();
+        nickname = intent.getStringExtra("nickname");
         //Set toolbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Add New Baby");
+        getSupportActionBar().setTitle("Update Baby infomation");
 
         //date picker presentation
         tvBirthday = (TextView) findViewById(R.id.input_birthday);//button for showing date picker dialog
@@ -115,16 +111,14 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         tvCity = (TextView) findViewById(R.id.input_city);
         tvGender = (TextView) findViewById(R.id.input_gender);
         tvEmail = (TextView) findViewById(R.id.input_email);
-        btnSave = (Button) findViewById(R.id.btn_save);
-        etInput_nickname = (EditText)findViewById(R.id.input_nickname);
+        btnUpdate = (Button) findViewById(R.id.btn_update);
+        btnDelete = (Button) findViewById(R.id.btn_delete);
+        tvNickname = (TextView)findViewById(R.id.input_nickname);
+        tvNickname.setText(nickname);
 
         setMaintURL(config.SERVERADDRESS + "/profile/getEmail.php");
         ServerResponse pud = new ServerResponse(this);
         pud.execute(getMainURL() + "?token=" + token);
-        System.out.println(getMainURL() + "?token=" + token);
-
-       // Intent intent = getIntent();
-        //setMaintURL(config.SERVERADDRESS + "/profile/profile.php");
 
         clickTextviewListener(tvBirthday);
         clickTextviewListener(tvProvince);
@@ -138,10 +132,16 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         mDay = c.get(Calendar.DAY_OF_MONTH);
         // display the current date
         updateDisplay();
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveProfile();
+                updateProfile();
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteProfile();
             }
         });
     }
@@ -227,13 +227,13 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
 
             case ONTARIO_CITY_DIALOG_ID:
                 AlertDialog.Builder cityBuilder0 = new AlertDialog.Builder(this);
-                    cityBuilder0.setTitle("Select City")
-                            .setItems(ontario_city_array, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mCity = ontario_city_array[which];
-                                    tvCity.setText(mCity);
-                                }
-                            });
+                cityBuilder0.setTitle("Select City")
+                        .setItems(ontario_city_array, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                mCity = ontario_city_array[which];
+                                tvCity.setText(mCity);
+                            }
+                        });
                 return cityBuilder0.create();
 
             case QUEBEC_CITY_DIALOG_ID:
@@ -391,8 +391,9 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject item = jsonArray.getJSONObject(i);
-                tvEmail.setText(item.getString("email"));
                 email = item.getString("email");
+                tvEmail.setText(email);
+
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -411,17 +412,37 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
         this.mainURL = getMainURL() + page;
     }
 
-    public void saveProfile() {
-        final ProgressDialog progressDialog = new ProgressDialog(BabyProfileDisplayActivity.this,
+    public void updateProfile() {
+        final ProgressDialog progressDialog = new ProgressDialog(BabyProfileChangeActivity.this,
                 R.style.AppTheme);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Waiting...");
         progressDialog.show();
         ServerResponse pud = new ServerResponse(this);
+        String URL = (config.SERVERADDRESS + "/profile/updateBaby.php?nickname=" + nickname +"&email="+email+"&token="+token +"&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity).replace(" ","%20");
+        System.out.println("update baby: " + URL);
+        pud.execute(URL);
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        if (config.getAuth(getApplicationContext()))
+                            System.out.println("pass");
+                        else
+                            System.out.println("failed");
+                        progressDialog.dismiss();
+                    }
+                }, 1000);
+    }
 
-        String nickname = etInput_nickname.getText().toString();
-        String URL = (config.SERVERADDRESS + "/profile/addBaby.php?nickname=" + nickname +"&email="+email+"&token="+token +"&gender=" + gender_number + "&birthday=" + mBirthday + "&province=" + mProvince + "&city=" + mCity).replace(" ","%20");
-        System.out.println("add baby: " + URL);
+    public void deleteProfile() {
+        final ProgressDialog progressDialog = new ProgressDialog(BabyProfileChangeActivity.this,
+                R.style.AppTheme);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Waiting...");
+        progressDialog.show();
+        ServerResponse pud = new ServerResponse(this);
+        String URL = (config.SERVERADDRESS + "/profile/deleteBaby.php?nickname=" + nickname +"&email="+email+"&token="+token).replace(" ","%20");
+        System.out.println("delete baby: " + URL);
         pud.execute(URL);
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -434,7 +455,8 @@ public class BabyProfileDisplayActivity extends AppCompatActivity implements Asy
                     }
                 }, 1000);
         Intent myIntent = null;
-        myIntent = new Intent(BabyProfileDisplayActivity.this, BabyManagementActivity.class);
+        myIntent = new Intent(BabyProfileChangeActivity.this, BabyManagementActivity.class);
         startActivity(myIntent);
     }
+
 }

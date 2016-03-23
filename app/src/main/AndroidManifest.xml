@@ -53,6 +53,7 @@
         <activity android:name=".records.RecordsDisplayActivity" />
         <activity android:name=".profile.BabyProfileDisplayActivity"/>
         <activity android:name=".profile.BabyManagementActivity"/>
+        <activity android:name=".profile.BabyProfileChangeActivity"/>
     </application>
 
 </manifest>

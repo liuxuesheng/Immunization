@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ public class BabyManagementActivity extends AppCompatActivity implements AsyncRe
     JSONArray arr = null;
     private String mainURL = "";
     private LinearLayout baby_container = null;
+    private Toolbar toolbar = null;
 
     @Override
     public void onTaskComplete(Object out) {
@@ -31,13 +33,9 @@ public class BabyManagementActivity extends AppCompatActivity implements AsyncRe
             //news list
             arr = new JSONArray((String) out);
             JSONObject item = null;
-            String currentId = null;
 
             for (int i = 0; i < arr.length(); i++) {
                 TextView nicknameTextview = null;
-                boolean flag = false;
-                TextView sectionTextView = null;
-                String item_section = null;
                 String nickname = null;
                 try {
                     item = arr.getJSONObject(i);
@@ -45,34 +43,23 @@ public class BabyManagementActivity extends AppCompatActivity implements AsyncRe
                     ex.printStackTrace();
                 }
 
-                if (sectionTextView != null) {
-                    addDivider(baby_container, Color.rgb(30, 136, 229), 6);
-                    baby_container.addView(sectionTextView);
-                    addDivider(baby_container, Color.LTGRAY, 3);
-                    continue;
-                }
-
-                try {
-                    item_section = item.getString("item_section");
-                    System.out.println("Myitem_section" + item_section);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                //crete records name view
+                //create nickname text view
                 try {
                     nickname = item.getString("nickname");
+                    final String name = item.getString("nickname");
                     nicknameTextview = new TextView(this);
-                    nicknameTextview.setText(item.getString("nickname"));
+                    nicknameTextview.setText(nickname);
                     nicknameTextview.setBackgroundColor(Color.WHITE);
-                    nicknameTextview.setPadding(20, 10, 30, 10);
-                    nicknameTextview.setTextSize(18);
+                    nicknameTextview.setPadding(30, 20, 30, 20);
+                    nicknameTextview.setTextSize(25);
                     nicknameTextview.setBackgroundColor(Color.TRANSPARENT);
-                    System.out.println("My nickname" + nickname);
                     nicknameTextview.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            Intent intent = new Intent();
+                            intent.putExtra("nickname", name);
+                            intent.setClass(BabyManagementActivity.this, BabyProfileChangeActivity.class);
+                            startActivity(intent);
                         }
                     });
 
@@ -81,7 +68,6 @@ public class BabyManagementActivity extends AppCompatActivity implements AsyncRe
                 }
 
                 baby_container.addView(nicknameTextview);
-
                 addDivider(baby_container, Color.LTGRAY, 3);
             }
         } catch (JSONException ex) {
@@ -98,6 +84,11 @@ public class BabyManagementActivity extends AppCompatActivity implements AsyncRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby_management);
+        //Set toolbar
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("MyBabies");
+
         String token = config.getToken(this);
 
         setMaintURL(config.SERVERADDRESS + "/profile/babies_list.php");
