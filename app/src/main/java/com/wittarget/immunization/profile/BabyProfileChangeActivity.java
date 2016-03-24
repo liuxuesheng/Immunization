@@ -115,6 +115,7 @@ public class BabyProfileChangeActivity extends AppCompatActivity implements Asyn
         btnDelete = (Button) findViewById(R.id.btn_delete);
         tvNickname = (TextView)findViewById(R.id.input_nickname);
         tvNickname.setText(nickname);
+        System.out.println("update nickname: " + nickname);
 
         setMaintURL(config.SERVERADDRESS + "/profile/getEmail.php");
         ServerResponse pud = new ServerResponse(this);
@@ -196,7 +197,15 @@ public class BabyProfileChangeActivity extends AppCompatActivity implements Asyn
                     }
                 }
             });
-        } else if (v == tvGender) {
+        }else if (v==tvNickname){
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+        else if (v == tvGender) {
             v.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     showDialog(GENDER_DIALOG_ID);

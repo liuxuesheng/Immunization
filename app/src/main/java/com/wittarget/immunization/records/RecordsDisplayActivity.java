@@ -56,7 +56,7 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
                     current_date = yearString + "-" + monthString + "-" + dayString;
                     System.out.println("Current date2: " + current_date);
                     final TextView sectionTextView = new TextView(getApplicationContext());
-                    sectionTextView.setPadding(20, 10, 30, 10);
+                    sectionTextView.setPadding(20, 10, 60, 10);
                     sectionTextView.setTextSize(20);
                     sectionTextView.setTextColor(Color.BLACK);
                     sectionTextView.setBackgroundColor(Color.TRANSPARENT);
@@ -70,6 +70,12 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
                     layoutBt.setMargins(0, 20, 60, 10);
                     bt.setLayoutParams(layoutBt);
 
+                    Button bt_schedule = new Button(getApplicationContext());
+                    bt_schedule.setText("Schedule");
+                    bt_schedule.setTextSize(18);
+                    bt_schedule.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    bt_schedule.setTextColor(Color.WHITE);
+
                     final LinearLayout ll = new LinearLayout(getApplicationContext());
                     LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layout.setMargins(0, 20, 0, 20);
@@ -78,12 +84,30 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
 
                     ll.addView(bt);
                     ll.addView(sectionTextView);
+                    ll.addView(bt_schedule);
 
                     bt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             myLinearLayout = ll;
                             showDialog(DATE_DIALOG_ID);
+                        }
+                    });
+
+                    bt_schedule.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Calendar cal = Calendar.getInstance();
+                            Intent intent = new Intent(Intent.ACTION_EDIT);
+                            intent.setType("vnd.android.cursor.item/event");
+                            intent.putExtra("beginTime", cal.getTimeInMillis());
+                            intent.putExtra("allDay", true);
+                            intent.putExtra("rrule", "FREQ=YEARLY");
+                            intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
+                            intent.putExtra("title", "Schedule a time to inject immunization");
+                            System.out.println("Schedule:"+ cal.getTimeInMillis());
+                            startActivity(intent);
+
                         }
                     });
 
@@ -171,12 +195,11 @@ public class RecordsDisplayActivity extends Activity implements AsyncResponse {
                             layoutBt.setMargins(0, 20, 60, 10);
                             bt.setLayoutParams(layoutBt);
 
-                            AppCompatButton bt_schedule = new AppCompatButton(this);
+                            Button bt_schedule = new Button(this);
                             bt_schedule.setText("Schedule");
+                            bt_schedule.setTextSize(20);
                             bt_schedule.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             bt_schedule.setTextColor(Color.WHITE);
-                            LinearLayout.LayoutParams layoutBt2 = new LinearLayout.LayoutParams(90, 90);
-                            layoutBt2.setMargins(0, 20, 60, 10);
 
                             final LinearLayout ll = new LinearLayout(this);
                             LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

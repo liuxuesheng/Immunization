@@ -119,11 +119,12 @@ public class SignupActivity extends AppCompatActivity
                 }, 3000);
     }
 
-
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
         finish();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
     }
 
     public void onSignupFailed() {

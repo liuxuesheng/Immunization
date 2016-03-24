@@ -64,9 +64,24 @@ public class ShowProfileAdapter extends BaseAdapter {
                         context.startActivity(intent);
                     }
                 });
+                listItemView.profile_img.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        //intent.setClass(context, BabyProfileDisplayActivity.class);
+                        intent.setClass(context, BabyManagementActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
             }
             if(listItemView.profile_name.getText() =="About App"){
                 listItemView.profile_name.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setClass(context, AppInfoActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
+                listItemView.profile_img.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setClass(context, AppInfoActivity.class);

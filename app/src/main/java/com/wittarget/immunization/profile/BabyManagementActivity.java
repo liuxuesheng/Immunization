@@ -60,6 +60,7 @@ public class BabyManagementActivity extends AppCompatActivity implements AsyncRe
                             intent.putExtra("nickname", name);
                             intent.setClass(BabyManagementActivity.this, BabyProfileChangeActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                     });
 
@@ -103,9 +104,11 @@ public class BabyManagementActivity extends AppCompatActivity implements AsyncRe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent();
                 intent.setClass(BabyManagementActivity.this, BabyProfileDisplayActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

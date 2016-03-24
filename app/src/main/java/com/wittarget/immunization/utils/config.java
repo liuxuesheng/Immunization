@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 public class config {
 
     //public final static String SERVERADDRESS = "http://192.168.0.16/Immunizationserver";
-    //public final static String SERVERADDRESS = "http://10.100.24.124/immunizationserver";
-    public final static String SERVERADDRESS = "http://192.168.250.10/immunizationserver";
+    public final static String SERVERADDRESS = "http://10.100.26.209/immunizationserver";
+    //public final static String SERVERADDRESS = "http://192.168.250.10/immunizationserver";
     //public final static String SERVERADDRESS = "http://10.135.33.31/immunizationserver";
 
     public static boolean getAuth(Context context) {
